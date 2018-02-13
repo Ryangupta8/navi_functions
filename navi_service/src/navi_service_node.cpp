@@ -29,7 +29,7 @@ void villa_navi_srv::Publish_nav_target(float _x, float _y, float _theta)
 }
 
 
-bool villa_navi_srv::goTarget(villa_navi_service::GoTargetPos::Request &req, villa_navi_service::GoTargetPos::Response &res)
+bool villa_navi_srv::goTarget(navi_service::GoTargetPos::Request &req, navi_service::GoTargetPos::Response &res)
 {
 	// std::vector<float> targetpos(3,0.0);
 	// targetpos[0]=_x;

@@ -31,7 +31,7 @@
 #include <pcl_ros/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/kdtree/kdtree.h>
-#include <villa_navi_service/GoTargetPos.h>
+#include <navi_service/GoTargetPos.h>
 
 #define FOVW 29				//field of view width
 #define MATH_PI 3.14159265359
@@ -123,7 +123,7 @@ public:
 	void InitializeBelief();
 	void Publish_nav_target(float _x, float _y, float _theta);
 	void setViewpointTarget(const std::vector<double> pos);
-	bool goTarget(villa_navi_service::GoTargetPos::Request &req, villa_navi_service::GoTargetPos::Response &res);	
+	bool goTarget(navi_service::GoTargetPos::Request &req, navi_service::GoTargetPos::Response &res);	
 
 	std::vector<double> m_dyn_occupancy;
 	std::vector<double> m_prob_occupancy;

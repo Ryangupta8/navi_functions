@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(villa_navi_service)	
+project(navi_service)	
 
 SET(SOURCES src/navi_service_node.cpp)
 

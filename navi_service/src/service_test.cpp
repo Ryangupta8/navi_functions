@@ -12,7 +12,7 @@
 #include <sstream>
 #include <signal.h>
 #include <boost/thread/thread.hpp>
-#include <villa_navi_service/GoTargetPos.h>
+#include <navi_service/GoTargetPos.h>
 using namespace Eigen;
 
 bool g_caught_sigint=false;
