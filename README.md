@@ -1,8 +1,8 @@
 # navi_functions
-navi_functions
+navi_functions (packages for MDP-based grid-based planner)
 
-# Package for global & local planner 
- - global planner (Markov-Decision Process based planner)
+### global & local planner 
+ - global planner 
  - local planner
-    - local window approach
+
  
