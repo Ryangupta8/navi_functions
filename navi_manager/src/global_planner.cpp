@@ -12,29 +12,17 @@
 
 // using namespace Eigen;
 
-bool boolSolve=false;
-
-static int  Receive_count=0;
-int x_size=Grid_Num_X;
-int y_size=Grid_Num_Y;
-double unit_step=0.25;
-double center_offset=0.3;
-vector<int>    localoccupancy(Grid_Num_X*Grid_Num_Y,0);
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "Gobal_MDP_planner");
+  ros::init(argc, argv, "Gobal_planner");
   
   MDPManager problemmanager; 
-  
-  //problemmanager.setRosObj(&nodeObj);
   MapParam   mapParam;
   problemmanager.setPMapParam(&mapParam);
 
   // ros::Rate r(5);
   ros::Subscriber Point_sub;          //subscriber clicked point
-  ros::Subscriber CurPos_sub;         //subscriber tracking current base position
-  ros::Subscriber Localmap_sub;       //subscriber detecting lcal map with laser scan
   ros::Subscriber staticmap_sub;
   ros::Subscriber global_pos_sub;
 
@@ -60,7 +48,6 @@ int main(int argc, char **argv)
          printf("End solve\n");
          problemmanager.m_boolSolve=false;
       }
-   // problemmanager.setpub_path();
 
   	 ros::spinOnce();
      loop_rate.sleep();  

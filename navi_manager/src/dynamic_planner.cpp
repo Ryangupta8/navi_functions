@@ -43,9 +43,7 @@ int main(int argc, char **argv)
   ros::Subscriber global_pos_sub;
   ros::Subscriber jointstates_sub;
   ros::Subscriber  human_yolo_sub;
-  //ros::Subscriber edge_leg_sub;
   ros::Subscriber filtered_result_sub;
-  //ros::Subscriber keyboard_sub;
   ros::NodeHandle n;
   
   //Point_sub        = n.subscribe<geometry_msgs::PointStamped>("/clicked_point", 10, &Dynamic_Manager::ClikedpointCallback,&dynamicManager);
@@ -59,8 +57,6 @@ int main(int argc, char **argv)
   global_pos_sub   = n.subscribe<geometry_msgs::PoseStamped>("/global_pose", 10, &Dynamic_Manager::global_pose_callback,&dynamicManager);
   SplinePath_sub=  n.subscribe<nav_msgs::Path>("/mdp_path", 10, &Dynamic_Manager::mdppath_callback,&dynamicManager);
   human_yolo_sub   = n.subscribe<visualization_msgs::MarkerArray>("/human_boxes", 10, &Dynamic_Manager::Human_MarkerArrayCallback,&dynamicManager);
-
-  // filter_result_sub=nh_.subscribe<people_msgs::PositionMeasurement>("people_tracker_filter", 10,&Edgeleg_manager::filter_result_callback,&dynamicManager);
 
   ros::Rate loop_rate(30);
   while (ros::ok())

@@ -1,7 +1,7 @@
 #include "navi_service_node.h"
 
 
-villa_navi_srv::villa_navi_srv():index(0),m_numofhuman(0),m_receiveiter(0){
+villa_navi_srv::villa_navi_srv(){
 	}
 villa_navi_srv::~villa_navi_srv(){}
 
@@ -42,6 +42,7 @@ bool villa_navi_srv::goTarget(navi_service::GoTargetPos::Request &req, navi_serv
 	}
 	else
 	{
+		ROS_INFO("go to target");
 		Publish_nav_target(req.x_from_map,req.y_from_map,req.theta_from_map);
 		res.is_possible_go=true;
 	}

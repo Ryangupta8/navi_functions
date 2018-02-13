@@ -43,13 +43,10 @@ int main(int argc, char **argv)
   Client trj_cli("/hsrb/omni_base_controller/follow_joint_trajectory", true);
   trj_cli.waitForServer();
   
-  // Point_sub        = n.subscribe<geometry_msgs::PointStamped>("/clicked_point", 10, &PathManager::ClikedpointCallback,&path_manger);
-  // human_cmd_sub    = n.subscribe<std_msgs::Int8>("/Int_cmd_trackhuman", 50, &PathManager::Human_target_cmdCallback,&path_manger);
-  // human_marker_sub = n.subscribe<visualization_msgs::Marker>("/human_target", 50, &PathManager::Human_MarkerCallback,&path_manger);
-    // jointstates_sub  = n.subscribe<sensor_msgs::JointState>("/hsrb/joint_states", 10, &PathManager::joint_states_callback,&path_manger);
   pomdp_cmd_sub   = path_manager.m_node.subscribe<std_msgs::Int8>("/pomdp_cmd", 10, &PathManager::pomdp_cmd_callback,&path_manager);
   global_pos_sub   = path_manager.m_node.subscribe<geometry_msgs::PoseStamped>("/global_pose", 10, &PathManager::global_pose_callback,&path_manager);
   path_sub = path_manager.m_node.subscribe<nav_msgs::Path>("mdp_path_dynamic",10,&PathManager::dyn_path_callback,&path_manager);
+
   // path_sub = path_manager.m_node.subscribe<nav_msgs::Path>("mdp_path_dynamic",10,&PathManager::dyn_path_callback,&path_manager);
   //service client
   // ros::ServiceClient client = 

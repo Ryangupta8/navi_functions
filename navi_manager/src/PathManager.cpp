@@ -32,9 +32,9 @@ PathManager::PathManager()
 	viewTarget_visual_pub = m_node.advertise<visualization_msgs::Marker>("viewTarget_marker",30, true);
 	Gaze_point_pub= m_node.advertise<geometry_msgs::Point>("/gazed_point_fixing_node/target_point", 50, true);
 	Gaze_activate_pub= m_node.advertise<std_msgs::Bool>("/gazed_point_fixing_node/activate", 50, true);
-  nav_cmd_pub=m_node.advertise<std_msgs::Int8>("/nav_cmd_int", 50, true);
-  head_cmd_pub=m_node.advertise<std_msgs::Int8>("head_cmd_int",50,true);
-  nav_client=m_node.serviceClient<navi_service::GoTargetPos>("navi_go_base");
+    nav_cmd_pub=m_node.advertise<std_msgs::Int8>("/nav_cmd_int", 50, true);
+    head_cmd_pub=m_node.advertise<std_msgs::Int8>("head_cmd_int",50,true);
+    nav_client=m_node.serviceClient<navi_service::GoTargetPos>("navi_go_base");
         
 }
 
@@ -108,7 +108,6 @@ void PathManager::pomdp_cmd_callback(const std_msgs::Int8::ConstPtr& msg)
 
 
 
-
 void PathManager::setPath(const nav_msgs::Path::ConstPtr& msg)
 {
  
@@ -144,8 +143,8 @@ void PathManager::setPath(const nav_msgs::Path::ConstPtr& msg)
     
 	    if(k==pathSize-1)
 	    {
-	    	finalTarget[0] = msg->poses[k].pose.position.x;
-	 		 finalTarget[1] = msg->poses[k].pose.position.y;
+            finalTarget[0] = msg->poses[k].pose.position.x;
+	 		finalTarget[1] = msg->poses[k].pose.position.y;
 	    }
 
 
@@ -290,8 +289,7 @@ void PathManager::publishViewTpointTarget()
         marker_humans.color.b = 0.7;
         marker_humans.color.a = 0.85;
 
-
-     viewTarget_visual_pub.publish(marker_humans);
+        viewTarget_visual_pub.publish(marker_humans);
 
 
 }
