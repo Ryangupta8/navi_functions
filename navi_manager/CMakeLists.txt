@@ -52,8 +52,8 @@ include_directories(
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-add_executable(mdpplanner src/global_planner.cpp ${SOURCES})
-target_link_libraries(mdpplanner ${catkin_LIBRARIES})
+add_executable(global_planner src/global_planner.cpp ${SOURCES})
+target_link_libraries(global_planner ${catkin_LIBRARIES})
 
 add_executable(dynamic_planner src/dynamic_planner.cpp ${SOURCES})
 target_link_libraries(dynamic_planner ${catkin_LIBRARIES})
