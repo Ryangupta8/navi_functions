@@ -18,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   std_msgs
   tf
-  villa_navi_service
+  navi_service
 )
 
 find_package(Eigen3 QUIET)

@@ -35,7 +35,7 @@
 #include "tf/transform_listener.h"
 #include "tf/message_filter.h"
 #include <tf/transform_datatypes.h>
-#include <villa_navi_service/GoTargetPos.h>
+#include <navi_service/GoTargetPos.h>
 #include <cmath>
 #include <cfloat>
 

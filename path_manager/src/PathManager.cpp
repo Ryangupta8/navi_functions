@@ -34,7 +34,7 @@ PathManager::PathManager()
 	Gaze_activate_pub= m_node.advertise<std_msgs::Bool>("/gazed_point_fixing_node/activate", 50, true);
   nav_cmd_pub=m_node.advertise<std_msgs::Int8>("/nav_cmd_int", 50, true);
   head_cmd_pub=m_node.advertise<std_msgs::Int8>("head_cmd_int",50,true);
-  nav_client=m_node.serviceClient<villa_navi_service::GoTargetPos>("navi_go_base");
+  nav_client=m_node.serviceClient<navi_service::GoTargetPos>("navi_go_base");
         
 }
 
@@ -82,7 +82,7 @@ void PathManager::pomdp_cmd_callback(const std_msgs::Int8::ConstPtr& msg)
 
     std::cout<<"target_x :" <<target_x<<", target_y  : "<<target_y<<std::endl;  
 
-    villa_navi_service::GoTargetPos nav_srv;
+    navi_service::GoTargetPos nav_srv;
     nav_srv.request.x_from_map =target_x;
     nav_srv.request.y_from_map =target_y;
     nav_srv.request.theta_from_map =target_theta;

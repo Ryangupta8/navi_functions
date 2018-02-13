@@ -16,7 +16,7 @@
 #include <nav_msgs/Path.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
-#include <villa_navi_service/GoTargetPos.h>
+#include <navi_service/GoTargetPos.h>
 #include <sstream>
 #include <boost/thread/thread.hpp>
 #include "srBSpline.h"
