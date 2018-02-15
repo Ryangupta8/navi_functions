@@ -30,6 +30,7 @@ Client	navi_manager/src/base_actionlib.cpp	/^typedef actionlib::SimpleActionClie
 Client	navi_manager/src/base_conti_actionlib.cpp	/^typedef actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> Client;$/;"	t	file:
 ClikedpointCallback	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:Dynamic_Manager
 ClikedpointCallback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:MDPManager
+ClikedpointCallback	navi_service/src/clicked_navi_test.cpp	/^  void ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:click_navi_manager
 ClikedpointCallback	navi_service/src/navi_service_node.cpp	/^void villa_navi_srv::ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:villa_navi_srv
 CmdIntCallback	navi_manager/src/dynamic_planner.cpp	/^void CmdIntCallback(const std_msgs::Int8::ConstPtr& msg)$/;"	f
 Comparetwopoistions	navi_manager/src/Dynamic_Manager.cpp	/^bool Dynamic_Manager::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:Dynamic_Manager
@@ -85,9 +86,11 @@ FindMultiplicity	navi_manager/src/srBSpline.cpp	/^int srBSpline::FindMultiplicit
 Gaze_activate_pub	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   Gaze_activate_pub;$/;"	m	class:Dynamic_Manager
 Gaze_activate_pub	navi_manager/include/PathManager.h	/^	ros::Publisher Gaze_activate_pub;$/;"	m	class:PathManager
 Gaze_activate_pub	navi_service/include/navi_service_node.h	/^	ros::Publisher Gaze_activate_pub;$/;"	m	class:villa_navi_srv
+Gaze_activate_pub	navi_service/src/clicked_navi_test.cpp	/^  ros::Publisher Gaze_activate_pub;$/;"	m	class:click_navi_manager	file:
 Gaze_point_pub	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   Gaze_point_pub;$/;"	m	class:Dynamic_Manager
 Gaze_point_pub	navi_manager/include/PathManager.h	/^ 	ros::Publisher Gaze_point_pub;$/;"	m	class:PathManager
 Gaze_point_pub	navi_service/include/navi_service_node.h	/^	ros::Publisher Gaze_point_pub;$/;"	m	class:villa_navi_srv
+Gaze_point_pub	navi_service/src/clicked_navi_test.cpp	/^  ros::Publisher Gaze_point_pub;$/;"	m	class:click_navi_manager	file:
 GetControlPoint	navi_manager/include/srBSpline.h	/^	double GetControlPoint( int Index ) { return m_ControlPoints[Index]; }$/;"	f	class:srBSpline
 GetDegree	navi_manager/include/srBSpline.h	/^	int GetDegree( void ) { return m_Degree; }$/;"	f	class:srBSpline
 GetGrevilleAbscissa	navi_manager/src/srBSpline.cpp	/^double srBSpline::GetGrevilleAbscissa( int controlPointIndex )$/;"	f	class:srBSpline
@@ -205,6 +208,7 @@ Prob_good	navi_manager/include/MDPmanager.h	/^	double Prob_good;$/;"	m	class:MDP
 Publish_beliefmap	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::Publish_beliefmap()$/;"	f	class:Dynamic_Manager
 Publish_dynamicPath	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::Publish_dynamicPath()$/;"	f	class:Dynamic_Manager
 Publish_filter_measurment	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::Publish_filter_measurment(int measurement_type)$/;"	f	class:Dynamic_Manager
+Publish_nav_target	navi_service/src/clicked_navi_test.cpp	/^  void Publish_nav_target(float _x, float _y, float _theta)$/;"	f	class:click_navi_manager
 Publish_nav_target	navi_service/src/navi_service_node.cpp	/^void villa_navi_srv::Publish_nav_target(float _x, float _y, float _theta)$/;"	f	class:villa_navi_srv
 RAD2DEG	navi_manager/include/types.h	/^inline real_s RAD2DEG(double r){ return (r * SR_DEGREE); }$/;"	f
 RAD2DEG	navi_manager/include/types.h	/^inline real_s RAD2DEG(float r) { return (r * SR_DEGREE); }$/;"	f
@@ -356,6 +360,8 @@ checkObs	navi_manager/src/MDPmanager.cpp	/^bool MDPManager::checkObs(int cur_sti
 checkStaticObs	navi_manager/src/Dynamic_Manager.cpp	/^bool Dynamic_Manager::checkStaticObs(vector<int> cur_pos)$/;"	f	class:Dynamic_Manager
 checkStaticObs	navi_manager/src/MDPmanager.cpp	/^bool MDPManager::checkStaticObs(vector<int> cur_pos)$/;"	f	class:MDPManager
 check_cameraregion	navi_manager/src/Dynamic_Manager.cpp	/^bool Dynamic_Manager::check_cameraregion(float x_pos,float y_pos)$/;"	f	class:Dynamic_Manager
+click_navi_manager	navi_service/src/clicked_navi_test.cpp	/^  explicit click_navi_manager(){}$/;"	f	class:click_navi_manager
+click_navi_manager	navi_service/src/clicked_navi_test.cpp	/^class click_navi_manager{$/;"	c	file:
 connectCubicSpline	navi_manager/src/srBSpline.cpp	/^void srBSpline::connectCubicSpline( srBSpline* prev_spline,srBSpline* post_spline )$/;"	f	class:srBSpline
 count	navi_manager/scripts/human_marker.py	/^count = 0$/;"	v
 cur_coord	navi_manager/include/Dynamic_Manager.h	/^	std::vector<int> cur_coord;$/;"	m	class:Dynamic_Manager
@@ -458,6 +464,7 @@ listener	navi_manager/include/MDPmanager.h	/^ 	tf::TransformListener 	  listener
 listener	navi_manager/include/PathManager.h	/^ 	tf::TransformListener     listener;$/;"	m	class:PathManager
 listener	navi_manager/scripts/base_move.py	/^    def listener(self,wait=0.0):$/;"	m	class:BaseMoveCBA
 listener	navi_service/include/navi_service_node.h	/^	tf::TransformListener 	  listener;$/;"	m	class:villa_navi_srv
+listener	navi_service/src/clicked_navi_test.cpp	/^  tf::TransformListener     listener;$/;"	m	class:click_navi_manager	file:
 m_ControlPoints	navi_manager/include/srBSpline.h	/^	double* m_ControlPoints;	\/\/ control points$/;"	m	class:srBSpline
 m_ControlPointsarray	navi_manager/include/srBSpline.h	/^	double** m_ControlPointsarray;	\/\/ control points for V $/;"	m	class:srBSpline
 m_CubicSpline_x	navi_manager/include/Dynamic_Manager.h	/^ 	srBSpline*          m_CubicSpline_x;$/;"	m	class:Dynamic_Manager
@@ -504,6 +511,7 @@ main	navi_manager/src/base_conti_actionlib.cpp	/^int main(int argc, char **argv)
 main	navi_manager/src/dynamic_planner.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_manager/src/follow_test.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_manager/src/global_planner.cpp	/^int main(int argc, char **argv)$/;"	f
+main	navi_service/src/clicked_navi_test.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_service/src/service_test.cpp	/^int main(int argc, char **argv)$/;"	f
 map_step	navi_manager/include/MapParam.h	/^    double   		  	map_step;$/;"	m	class:MapParam
 marker	navi_manager/scripts/human_marker.py	/^   marker = Marker()$/;"	v
@@ -580,6 +588,7 @@ setHumanObs	navi_manager/src/MDPmanager.cpp	/^ void MDPManager::setHumanObs(cons
 setNavTarget	navi_manager/src/PathManager.cpp	/^void PathManager::setNavTarget()$/;"	f	class:PathManager
 setNavTarget_pub	navi_manager/include/PathManager.h	/^ 	ros::Publisher setNavTarget_pub;$/;"	m	class:PathManager
 setNavTarget_pub	navi_service/include/navi_service_node.h	/^	ros::Publisher setNavTarget_pub;$/;"	m	class:villa_navi_srv
+setNavTarget_pub	navi_service/src/clicked_navi_test.cpp	/^  ros::Publisher setNavTarget_pub;$/;"	m	class:click_navi_manager	file:
 setPMapParam	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::setPMapParam(MapParam* _pMapParam)$/;"	f	class:Dynamic_Manager
 setPMapParam	navi_manager/src/MDPmanager.cpp	/^void MDPManager::setPMapParam(MapParam* _pMapParam)$/;"	f	class:MDPManager
 setPath	navi_manager/src/PathManager.cpp	/^void PathManager::setPath(const nav_msgs::Path::ConstPtr& msg)$/;"	f	class:PathManager
@@ -642,5 +651,6 @@ y_	navi_manager/src/base_conti_actionlib.cpp	/^std::vector<double> y_;$/;"	v
 ~MDPManager	navi_manager/src/MDPmanager.cpp	/^MDPManager::~MDPManager()$/;"	f	class:MDPManager
 ~MapParam	navi_manager/src/MapParam.cpp	/^MapParam::~MapParam()$/;"	f	class:MapParam
 ~PathManager	navi_manager/src/PathManager.cpp	/^PathManager::~PathManager()$/;"	f	class:PathManager
+~click_navi_manager	navi_service/src/clicked_navi_test.cpp	/^  ~click_navi_manager(){}$/;"	f	class:click_navi_manager
 ~srBSpline	navi_manager/src/srBSpline.cpp	/^srBSpline::~srBSpline()$/;"	f	class:srBSpline
 ~villa_navi_srv	navi_service/src/navi_service_node.cpp	/^villa_navi_srv::~villa_navi_srv(){}$/;"	f	class:villa_navi_srv

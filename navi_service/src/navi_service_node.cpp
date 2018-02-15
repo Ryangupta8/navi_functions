@@ -34,7 +34,7 @@ bool villa_navi_srv::goTarget(navi_service::GoTargetPos::Request &req, navi_serv
 	// targetpos[0]=_x;
 	// targetpos[1]=_y;
 	// targetpos[2]=_theta;
-	if(req.x_from_map==NULL)
+	if(!(req.x_from_map))
 	{
 		Publish_nav_target(0.5,0.0,0.0);
 		res.is_possible_go=true;
