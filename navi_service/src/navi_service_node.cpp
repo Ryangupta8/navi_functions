@@ -14,18 +14,17 @@ void villa_navi_srv::Publish_nav_target(float _x, float _y, float _theta)
 		Navmsgs.header.stamp =  ros::Time::now();
 		Navmsgs.goal.target_pose.header.frame_id = "map";
 
-		 Navmsgs.goal.target_pose.pose.position.x=_x;
-		 Navmsgs.goal.target_pose.pose.position.y=_y;
-		 Navmsgs.goal.target_pose.pose.position.z=0.0;
+		Navmsgs.goal.target_pose.pose.position.x=_x;
+		Navmsgs.goal.target_pose.pose.position.y=_y;
+		Navmsgs.goal.target_pose.pose.position.z=0.0;
+		Navmsgs.goal.target_pose.pose.orientation.x=0.0;
+		Navmsgs.goal.target_pose.pose.orientation.y=0.0;
+		Navmsgs.goal.target_pose.pose.orientation.z=0.0;
+		Navmsgs.goal.target_pose.pose.orientation.w=1.0;
 
-		 Navmsgs.goal.target_pose.pose.orientation.x=0.0;
-		 Navmsgs.goal.target_pose.pose.orientation.y=0.0;
-		 Navmsgs.goal.target_pose.pose.orientation.z=0.0;
-		 Navmsgs.goal.target_pose.pose.orientation.w=1.0;
-
-		 // setViewpointTarget(leg_target);
-		 setNavTarget_pub.publish(Navmsgs);
-		 ROS_INFO("navgation published");
+		// setViewpointTarget(leg_target);
+		setNavTarget_pub.publish(Navmsgs);
+		ROS_INFO("navgation published");
 }
 
 
@@ -76,12 +75,17 @@ void villa_navi_srv::setViewpointTarget(const std::vector<double> pos)
 	Gaze_activate_pub.publish(activateGaze_msg);
 
 	// ros::Duration(0.5).sleep();
-
-
 }
 
 
-
+void villa_navi_srv::ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)
+{
+	printf("Receive point\n");
+    //GoalVector.resize(2,0);
+    //GoalVector[0]=msg->point.x;
+	//GoalVector[1]=msg->point.y;
+ 
+}
 
 
 

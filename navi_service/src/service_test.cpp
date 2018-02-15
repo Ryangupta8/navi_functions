@@ -26,6 +26,8 @@ void sig_handler(int sig)
 };
 
 
+
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "villa_navi_srvice");
@@ -33,6 +35,7 @@ int main(int argc, char **argv)
   villa_navi_srv villa_navi_srvice;
     
   ros::Subscriber global_pos_sub;
+  ros::Subscriber clicked_point_sub;
   ros::Subscriber edge_leg_sub;
   
   ros::NodeHandle n;
@@ -41,6 +44,7 @@ int main(int argc, char **argv)
   villa_navi_srvice.Gaze_point_pub= n.advertise<geometry_msgs::Point>("/gazed_point_fixing_node/target_point", 50, true);
   villa_navi_srvice.Gaze_activate_pub= n.advertise<std_msgs::Bool>("/gazed_point_fixing_node/activate", 50, true);
   
+  clicked_point_sub = n.subscribe<geometry_msgs::PointStamped>("/clicked_point", 10, &villa_navi_srv::ClikedpointCallback,&villa_navi_srvice);
   // global_pos_sub= n.subscribe<geometry_msgs::PoseStamped>("/global_pose", 10, &villa_navi_srv::global_pose_callback,&villa_navi_srvice);
   // edge_leg_sub=n.subscribe<geometry_msgs::PoseArray>("/edge_leg_detector", 10, &villa_navi_srv::edge_leg_callback,&villa_navi_srvice);
   ros::Rate loop_rate(50);
