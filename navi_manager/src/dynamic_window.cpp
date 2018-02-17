@@ -1,7 +1,7 @@
 #include "Dynamic_Manager.h"
 
 
-Dynamic_Manager::Dynamic_Manager(MapParam* _pMapParam):maxiter(Maxiteration),Action_dim(8),gamma(1),Ra(ra),publishnum(0),ReceiveData(0),m_boolSolve(false),dyn_path_num(0)
+Dynamic_Manager::Dynamic_Manager(MapParam* _pMapParam):maxiter(Maxiteration),gamma(1),Ra(ra),publishnum(0),ReceiveData(0),m_boolSolve(false),dyn_path_num(0)
 {
 	pMapParam=_pMapParam;
 	Init();
@@ -39,56 +39,40 @@ void Dynamic_Manager::Init()
  	cout<<" Grid - X :"<<X_mapSize<<", - Y : "<<Y_mapSize<<endl;
  	cout<<" NumofGrids : "<<Num_Grids<<endl;
 
- 	Policies.resize(pMapParam->MapSize, '0');
- 	Rewards.resize(pMapParam->MapSize, Ra); 
- 	U.resize(pMapParam->MapSize, 0.0); 
- 	Up.resize(pMapParam->MapSize, 0.0); 
- 	MdpSols.resize(pMapParam->MapSize, 0);
- 	PolicyNum.resize(pMapParam->MapSize, 0);
+     //Policies.resize(pMapParam->MapSize, '0');
+     //Rewards.resize(pMapParam->MapSize, Ra); 
+     //U.resize(pMapParam->MapSize, 0.0); 
+     //Up.resize(pMapParam->MapSize, 0.0); 
+     //MdpSols.resize(pMapParam->MapSize, 0);
+     //PolicyNum.resize(pMapParam->MapSize, 0);
 
- 	m_Start.resize(2,0);	
-    m_Goal.resize(2,0);							
- 	m_Robot.resize(2,0);
- 	Human_Goal_Coord.resize(2,0);
- 	human_global.resize(2,0.0);
- 	m_Start[0]=Start_X;
- 	m_Start[1]=Start_Y;
- 	cout<<" Start pos - X :"<<Start_X<<", - Y : "<<Start_Y<<endl;
+     //m_Start.resize(2,0);	
+    //m_Goal.resize(2,0);							
+     //m_Robot.resize(2,0);
+     //Human_Goal_Coord.resize(2,0);
+     //human_global.resize(2,0.0);
+     //m_Start[0]=Start_X;
+     //m_Start[1]=Start_Y;
+     //cout<<" Start pos - X :"<<Start_X<<", - Y : "<<Start_Y<<endl;
 
  	//Current Pos 
- 	m_Robot[0]=Start_X;
- 	m_Robot[1]=Start_Y;
+     //m_Robot[0]=Start_X;
+     //m_Robot[1]=Start_Y;
 
- 	m_Goal[0]=Goal_X;
- 	m_Goal[1]=Goal_Y;
- 	cout<<" Goal pos - X :"<<Goal_X<<", - Y : "<<Goal_Y<<endl;
+     //m_Goal[0]=Goal_X;
+     //m_Goal[1]=Goal_Y;
+     //cout<<" Goal pos - X :"<<Goal_X<<", - Y : "<<Goal_Y<<endl;
 
-    Rewards[Coord2CellNum(m_Goal)]=100;
- 	Policies[Coord2CellNum(m_Goal)]='+';
+    //Rewards[Coord2CellNum(m_Goal)]=100;
+     //Policies[Coord2CellNum(m_Goal)]='+';
 
 
- 	for(int i(0);i<m_static_obs.size();i++){
- 		Rewards[m_static_obs[i]]=0.0;
- 		Policies[m_static_obs[i]]='#';
-  	}
+     //for(int i(0);i<m_static_obs.size();i++){
+         //Rewards[m_static_obs[i]]=0.0;
+         //Policies[m_static_obs[i]]='#';
+      //}
 
  	//setActionVector
- 	ActionCC.resize(Action_dim);
- 	for(int i(0);i<Action_dim;i++)
- 		ActionCC[i].resize(2);
-
- // 	ActionCC[0][0]= 1;   ActionCC[0][1]= 0;
-	// ActionCC[1][0]= 0;   ActionCC[1][1]= 1;
-	// ActionCC[2][0]= -1;  ActionCC[2][1]= 0;
-	// ActionCC[3][0]=0;    ActionCC[3][1]= -1;
- 	ActionCC[0][0]= 1;   ActionCC[0][1]= 0;
-	ActionCC[1][0]= 1;   ActionCC[1][1]= 1;
-	ActionCC[2][0]= 0;   ActionCC[2][1]= 1;
-	ActionCC[3][0]=-1;   ActionCC[3][1]= 1;
-	ActionCC[4][0]=-1;   ActionCC[4][1]= 0;
-	ActionCC[5][0]=-1;   ActionCC[5][1]=-1;
-	ActionCC[6][0]= 0;   ActionCC[6][1]=-1;
-	ActionCC[7][0]= 1;   ActionCC[7][1]=-1;
 
 	Prob_good = 0.95;
 	Prob_bad = (1-Prob_good)/2.0;
@@ -99,13 +83,13 @@ void Dynamic_Manager::Init()
 
 
    	 global_pose.resize(3,0.0);
-	 CurVector.resize(3,0.0);
-	 GoalVector.resize(2,0.0);
-	 HeadingVector.resize(2,0.0);
-	 cur_coord.resize(2,0);
-	 Goal_Coord.resize(2,0);
+     CurVector.resize(3,0.0);
+	 //GoalVector.resize(2,0.0);
+	 //HeadingVector.resize(2,0.0);
+	 //cur_coord.resize(2,0);
+	 //Goal_Coord.resize(2,0);
 	 MapCoord.resize(2,0);
-	 filtered_target.resize(2,0.0);
+	 //filtered_target.resize(2,0.0);
 	 m_desired_heading=0.0;
      viewTarget.resize(2,0.0);
      
@@ -195,122 +179,6 @@ void Dynamic_Manager::CoordinateTansform_Rviz_Dyn_map(double _x, double _y,vecto
 
 }
 
-
-//function which relates to get origin w.r.t map (mdp)3232
-void Dynamic_Manager::CoordinateTransform_Rviz_Grid_Start(double _x, double _y,int map_type=0)
-{
-	cur_coord.resize(2,0);
-
-	 //for case of using static map
-	double reference_origin_x;
-	double reference_origin_y;
-
-	if(map_type==0) //static
-	{
-		ROS_INFO("static_start");
-		reference_origin_x=Scaled_static_map.info.origin.position.x;
-		reference_origin_y=Scaled_static_map.info.origin.position.y;
-	}
-	else
-	{
-		ROS_INFO("dynamic_start");
-		reference_origin_x=Scaled_dynamic_map.info.origin.position.x;
-		reference_origin_y=Scaled_dynamic_map.info.origin.position.y;
-	}
-
-	double  temp_x  = _x-reference_origin_x;
-	double  temp_y = _y-reference_origin_y;
-
-
-	cur_coord[0]= (int)(temp_x/pMapParam->map_step);
- 	cur_coord[1]= (int)(temp_y/pMapParam->map_step);
-
-
- 	 return;
-}
-
-//function which relates to get origin w.r.t map (mdp)
-void Dynamic_Manager::CoordinateTransform_Rviz_Grid_Goal(double _x, double _y,int map_type=0)
-{
-	 Goal_Coord.resize(2,0);
-	
-	double reference_origin_x;
-	double reference_origin_y;
-
-	if(map_type==0) //static
-	{
-		ROS_INFO("static_goal_setting\n");
-		reference_origin_x=Scaled_static_map.info.origin.position.x;
-		reference_origin_y=Scaled_static_map.info.origin.position.y;
-	}
-	else	//dynamic_window
-	{
-		ROS_INFO("dynamic_goal_setting\n");
-		reference_origin_x=Scaled_dynamic_map.info.origin.position.x;
-		reference_origin_y=Scaled_dynamic_map.info.origin.position.y;
-	}
-
-
-	double  temp_x  = _x-reference_origin_x;
-	double  temp_y = _y-reference_origin_y;
-
-//check
- 	Goal_Coord[0]= (int) (temp_x/pMapParam->map_step);
- 	Goal_Coord[1]= (int)(temp_y/pMapParam->map_step);
-
- 	ROS_INFO("Goal_Coord : x : %d , y : %d ", Goal_Coord[0],Goal_Coord[1]);
-
- 	 return;
-
-}
-
-
-void Dynamic_Manager::CoordinateTransform_Rviz_Grid_Human(double _x, double _y,int map_type=0)
-{
-	 Human_Goal_Coord.resize(2,0);
-	
-	double reference_origin_x;
-	double reference_origin_y;
-
-	if(map_type==0) //static
-	{
-		
-		reference_origin_x=Scaled_static_map.info.origin.position.x;
-		reference_origin_y=Scaled_static_map.info.origin.position.y;
-	}
-	else	//dynamic_window
-	{
-		
-		reference_origin_x=Scaled_dynamic_map.info.origin.position.x;
-		reference_origin_y=Scaled_dynamic_map.info.origin.position.y;
-	}
-
-
-	double  temp_x  = _x-reference_origin_x;
-	double  temp_y = _y-reference_origin_y;
-
-
- 	Human_Goal_Coord[0]= (int) (temp_x/pMapParam->map_step);
- 	Human_Goal_Coord[1]= (int)(temp_y/pMapParam->map_step);
-
- 	// ROS_INFO("Goal_Coord : x : %d , y : %d ", Goal_Coord[0],Goal_Coord[1]);
-
- 	 return;
-
-}
-
-// void Dynamic_Manager::Human_target_cmdCallback(const std_msgs::Int8::ConstPtr& msg)
-// {
-
-// 	if(msg->data==1)
-// 	{
-// 		booltrackHuman=true;
-// 	}
-// 	else{
-// 		booltrackHuman=false;
-
-// 	}
-// }
 
 void Dynamic_Manager::joint_states_callback(const sensor_msgs::JointState::ConstPtr& msg)
 {
@@ -972,71 +840,12 @@ void Dynamic_Manager::CellNum2globalCoord(const int Cell_idx, std::vector<double
 void Dynamic_Manager::ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)
 {
 	printf("Dynamic goal Receive point\n");
-    GoalVector.resize(2,0);
-    GoalVector[0]=msg->point.x;
-	GoalVector[1]=msg->point.y;
-    cur_coord.resize(2);
-	Goal_Coord.resize(2);
 	 
-	CoordinateTransform_Rviz_Grid_Start(CurVector[0],CurVector[1],1);
-	CoordinateTransform_Rviz_Grid_Goal(GoalVector[0],GoalVector[1],1);
-	updateMap(m_dynamic_occupancy,cur_coord,Goal_Coord);
-
-	 
-    m_boolSolve=true;
-
     return;
 }
 
 
-// void Dynamic_Manager::publish_leg_boxes()
-// {
-
-//   human_leg_boxes_array.markers.clear();
-//   if(Filtered_leg_human.size()>0)
-//   {
-//     for(int i(0);i<Filtered_leg_human.size();i++)
-//     {
-//         visualization_msgs::Marker marker_human_leg;
-//         marker_human_leg.header.frame_id = "/map"; 
-//         marker_human_leg.header.stamp = ros::Time::now();
-//         marker_human_leg.ns = "/human_leg_boxes";
-//         marker_human_leg.id = i;
-
-//         uint32_t shape = visualization_msgs::Marker::SPHERE;
-//         marker_human_leg.type = shape;
-
-//         marker_human_leg.pose.position.x = Filtered_leg_human[i][0];
-//         marker_human_leg.pose.position.y = Filtered_leg_human[i][1];
-//         marker_human_leg.pose.position.z = 1;
-
-//         marker_human_leg.pose.orientation.x = 0.0;
-//         marker_human_leg.pose.orientation.y = 0.0;
-//         marker_human_leg.pose.orientation.z = 0.0;
-//         marker_human_leg.pose.orientation.w = 1.0;
-
-//         double temp_dist,temp_dist2,temp_dist3;
-//         temp_dist  =0.5;
-//         temp_dist2 =0.5;
-//         temp_dist3 =0.5;
-
-//         //ROS_INFO("temp dist : %.3lf, temp dist2 : %.3lf, temp dist3 : %.3lf",temp_dist,temp_dist2,temp_dist3);
-//         marker_human_leg.scale.x = std::abs(temp_dist);
-//         marker_human_leg.scale.y = std::abs(temp_dist2);
-//         marker_human_leg.scale.z = std::abs(temp_dist3);
-
-//         marker_human_leg.color.r = 0.83;
-//         marker_human_leg.color.g = 0.6;
-//         marker_human_leg.color.b = 0.5;
-//         marker_human_leg.color.a = 0.85;
-
-//         human_leg_boxes_array.markers.push_back(marker_human_leg);
-//       }
-
-//       Leg_boxes_pub.publish(human_leg_boxes_array);
-//   }
-// }
-
+// v
 void Dynamic_Manager::publish_filtered_human_boxes()
 {
 
@@ -1081,154 +890,8 @@ void Dynamic_Manager::publish_filtered_human_boxes()
   }
 }
 
-
-
-void Dynamic_Manager::put_human_occ_map_leg()
-{
-
-	int human_map_legidx=0;
-	human_occupied_leg_idx.clear();
-
-	for(int i(0);i<Filtered_leg_human.size();i++)
-	{ 
-		human_map_legidx = CoordinateTransform_Global2_beliefMap(Filtered_leg_human[i][0],Filtered_leg_human[i][1]);
-		human_occupied_leg_idx.push_back(human_map_legidx);
-	}
-	int num_size = human_occupied_leg_idx.size();
-	if(num_size>0)
-	{
-		if(Human_Belief_Scan_map.data.size()>0){
-			for(int i(0);i<human_occupied_leg_idx.size();i++){
-			 	Human_Belief_Scan_map.data[human_occupied_leg_idx[i]]=40.0;
-			 	put_human_surrounding_beliefmap(human_occupied_leg_idx[i],20.0);
-			}
-		}
-	}
-	else
-	{
-
-
-	}
-
-
-
-	// if(Human_Belief_Scan_map.data.size()>0){
-	// 	for(int i(0);i<human_occupied_leg_idx.size();i++){
-
-	// 	 	Human_Belief_Scan_map.data[human_occupied_leg_idx[i]]=60.0;
-	// 	}
-
-	// }
-}
-int Dynamic_Manager::CoordinateTransform_Global2_beliefMap(double global_x, double global_y)
-{
-	double reference_origin_x=Human_Belief_Scan_map.info.origin.position.x;
-	double reference_origin_y=Human_Belief_Scan_map.info.origin.position.y;
-
-	//Find the coordinate w.r.t map origin
-	double  temp_x  = global_x - reference_origin_x;
-	double  temp_y  = global_y - reference_origin_y;
-
-	//Find the map cell idx for x, y
-	std::vector<int> human_coord(2,0);
- 	human_coord[0]= (int) (temp_x/Human_Belief_Scan_map.info.resolution);
- 	human_coord[1]= (int) (temp_y/Human_Belief_Scan_map.info.resolution);
-
- 	//Find the map index from cell x, y
- 	int belief_map_idx= human_coord[0]+Human_Belief_Scan_map.info.width*human_coord[1];
-
- 	return belief_map_idx;
-}
-
-void Dynamic_Manager::put_human_occ_map_yolo()
-{
-	int human_mapidx=0;
-	human_occupied_idx.clear();
-
-	for(int i(0);i<cur_yolo_people.size();i++)
-	{ 
-		human_mapidx = CoordinateTransform_Global2_beliefMap(cur_yolo_people[i][0],cur_yolo_people[i][1]);
-		human_occupied_idx.push_back(human_mapidx);
-	}
-	int num_size = human_occupied_idx.size();
-	// std::cout<<"human_occupied_size"<<num_size<<std::endl;
-	if(num_size>0)
-	{
-		if(Human_Belief_Scan_map.data.size()>0){
-			for(int i(0);i<human_occupied_idx.size();i++){
-			 	Human_Belief_Scan_map.data[human_occupied_idx[i]]=80.0;
-			 	put_human_surrounding_beliefmap(human_occupied_idx[i],30.0);
-			}
-		}
-	}
-	else
-	{
-
-
-	}
-}
-
-void Dynamic_Manager::update_human_occ_belief_scan()
-{
-	int num_of_detected_human =cur_yolo_people.size();
-	float prior=0.0;
-	float posterior=0.0;
-		
-		// for(int i(0);i< visiblie_idx_set.size();i++){
-		// 	int belief_map_index=visiblie_idx_set[i];
-		// 	if( Human_Belief_Scan_map.data[belief_map_index]>0)	//If we detected human
-		// 	{
-		// 		prior =(float) Human_Belief_Scan_map.data[belief_map_index]/100.0; // P(H)
-		// 		// float P_S = P_Sc_given_H*(prior) + P_Sc_given_Hc*(1-prior);
-		// 		posterior = prior*0.99;
-		// 		Human_Belief_Scan_map.data[belief_map_index] = posterior*100.0;
-		// 	}
-		// 	else
-		// 	{
-		// 		Human_Belief_Scan_map.data[belief_map_index]=0.0;
-		// 	}
-		// }
-		
-
-	int mapsize=Human_Belief_Scan_map.info.height*Human_Belief_Scan_map.info.width;
-	for(int i(0);i<mapsize;i++)
-	{
-		if(NotUpdatedCameraregion(i))
-		{
-			prior =(float) Human_Belief_Scan_map.data[i]*100.0; // P(H)
-			// float P_S = P_Sc_given_H*(prior) + P_Sc_given_Hc*(1-prior);
-			posterior = prior*0.99;
-			Human_Belief_Scan_map.data[i] =(float)  posterior/100.0;
-		}
-	}
-
-	//filter for low belief
-    for(int i(0);i<mapsize;i++)
-	{
-		if(Human_Belief_Scan_map.data[i]<15.0)
-		{
-			Human_Belief_Scan_map.data[i]=0.0;
-		}
-
-		if(Human_Belief_Scan_map.data[i]>100)
-		{
-			Human_Belief_Scan_map.data[i]=100.0;
-		}
-
-	}
-
-	filterhumanbelief();
-
-
-
-
-
-}
-
-
 bool Dynamic_Manager::NotUpdatedCameraregion(int idx)
 {
-
 	for(int i(0);i<visiblie_idx_set.size();i++)
 	{
 		if(idx==visiblie_idx_set[i])
@@ -1237,69 +900,6 @@ bool Dynamic_Manager::NotUpdatedCameraregion(int idx)
 
 	return true;
 }
-
-void Dynamic_Manager::put_human_surrounding_beliefmap(int idx, double value)
-{
-
-	int next_idx=0;
-	int mapsize=Human_Belief_Scan_map.info.width*Human_Belief_Scan_map.info.height;
-
-	for(int i(0);i<8;i++){
-		switch(i){
-		case 0:	next_idx=idx-Human_Belief_Scan_map.info.width-1;
-			break;
-		case 1:	next_idx=idx-Human_Belief_Scan_map.info.width;
-			break;
-		case 2:	next_idx=idx-Human_Belief_Scan_map.info.width+1;
-			break;
-		case 3:	next_idx=idx-1;
-			break;
-		case 4: next_idx=idx+1;
-			break;
-		case 5:	next_idx=idx+Human_Belief_Scan_map.info.width-1;
-			break;
-		case 6: next_idx=idx+Human_Belief_Scan_map.info.width;
-			break;
-		case 7:	next_idx=idx+Human_Belief_Scan_map.info.width+1;
-			break;
-		}
-
-		if(next_idx>0 && next_idx<mapsize)
-		{	
-			// std::cout<<"here"<<std::endl;
-			Human_Belief_Scan_map.data[next_idx]=value;
-		}
-	}
-	
-}
-
-void Dynamic_Manager::Publish_beliefmap()
-{
-		
-     Human_Belief_Scan_map.info.width=15;
-     Human_Belief_Scan_map.info.height= 15;
-     Human_Belief_Scan_map.info.resolution=0.5;
-     double belief_map_offset =Human_Belief_Scan_map.info.width*Human_Belief_Scan_map.info.resolution;
-     Human_Belief_Scan_map.info.origin.position.x=CurVector[0]-0.5*belief_map_offset-0.5*Human_Belief_Scan_map.info.resolution;
-     Human_Belief_Scan_map.info.origin.position.y=CurVector[1]-0.5*belief_map_offset-0.5*Human_Belief_Scan_map.info.resolution;
-     Human_Belief_Scan_map.data.resize(Human_Belief_Scan_map.info.width*Human_Belief_Scan_map.info.height,0.0);
-
-     getCameraregion();
-     put_human_occ_map_leg();
-     put_human_occ_map_yolo();
-     update_human_occ_belief_scan();
-
-     Human_Belief_Scan_map.header.stamp =  ros::Time::now();
-     Human_Belief_Scan_map.header.frame_id = "map"; 
-     belief_pub.publish(Human_Belief_Scan_map);
-
-}
-
-// void Dynamic_Manager::Basepos_Callback(const geometry_msgs::PointStamped::ConstPtr& msg)
-// {
-//   ROS_INFO("base position msg");
-//   printf("Map origin x index is %.3f, y index is %.3f \n",Map_orig_Vector[0],Map_orig_Vector[1]); 
-// }
 
 
 void Dynamic_Manager::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
@@ -1331,13 +931,6 @@ void Dynamic_Manager::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPt
 	Scaled_dynamic_map_path.info.resolution=0.75;
 	Scaled_dynamic_map_path.info.origin.position.x=CurVector[0]-DYN_OFFSET_X-0.5*Scaled_dynamic_map.info.resolution;
 	Scaled_dynamic_map_path.info.origin.position.y=CurVector[1]-DYN_OFFSET_Y-0.5*Scaled_dynamic_map.info.resolution;
-
-
-
-
-
-
-
 
    double base_origin_x =msg->info.origin.position.x;
    double base_origin_y =msg->info.origin.position.y;
@@ -1384,26 +977,6 @@ void Dynamic_Manager::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPt
 
    //insert mdp_path_cell
 
-
-   // insert human occupied cell
-   //std::vector<int> HumanMa
-
-   	//remove human occupied cell
-       //std::vector<double> HumanCoord(2,0);
-       //HumanCoord[0] = 0.6;
-       //HumanCoord[1] = 1.2;
-       //std::vector<double> HumanCoord2(2,0);
-       //HumanCoord2[0] = 2.6;
-       //HumanCoord2[1] = 0.9;
-       //std::vector<std::vector<double> > Human_Coord_set;
-       //Human_Coord_set.push_back(HumanCoord);
-       //Human_Coord_set.push_back(HumanCoord2);
-
-       //for(int i(0);i<Human_Coord_set.size();i++)
-	//{
-		   //Scaled_dynamic_map.data[Coord2CellNum(Human_Coord_set[i])]=90.0;
-		
-	//}
 
      //find index from
 	 Scaled_dynamic_map.header.stamp =  ros::Time::now();
@@ -1531,38 +1104,6 @@ void Dynamic_Manager::global_pose_callback(const geometry_msgs::PoseStamped::Con
 }
 
 
-// void Dynamic_Manager::Local_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
-// {
-
-// 	 if(ReceiveData==0)
-//     {
-//       ROS_INFO("width : %d" ,msg->info.width);
-//       ROS_INFO("height : %d" ,msg->info.height);
-//       ROS_INFO("resolution : %lf" ,msg->info.resolution);
-//       ReceiveData++;
-
-//       pMapParam->Num_grid_X=(int) msg->info.width;
-//       pMapParam->Num_grid_Y=(int) msg->info.height;
-//       pMapParam->map_step= (double) msg->info.resolution;  
-
-//     }
-
-//    double base_origin_x =msg->info.origin.position.x;
-//    double base_origin_y =msg->info.origin.position.y;
-
-//    //ROS_INFO("origin x: %lf, y : %lf",base_origin_x,base_origin_y);
-//    //ROS_INFO("int msg");
-//    //  m_localoccupancy.resize(msg->data.size());
-
-//    // for(int i(0);i<msg->data.size();i++){
-//    //      m_localoccupancy[i]=(msg->data)[i];
-//    // }	
-//    ReceiveData++;
-
-
-// }
-
-
 void Dynamic_Manager::Global2MapCoord(const vector<double>& _globalcoord,vector<int>& _MapCoord)
 {
  
@@ -1572,115 +1113,7 @@ void Dynamic_Manager::Global2MapCoord(const vector<double>& _globalcoord,vector<
   _MapCoord[1]= (int)_globalcoord[1]/(pMapParam->map_step);
 
   //std::cout<<"x:"<<MapCoord[0]<<" , "<<"y:"<<MapCoord[1]<<std::endl;
-
   return ;
-}
-
-
-void Dynamic_Manager::Publish_filter_measurment(int measurement_type)
-{
-	//double pos_x = 0.0;
-	//double pos_y = 0.0;
-
-     //std::vector< std::vector<double> > targetHumans = Filtered_leg_human;
-
-	//switch(measurement_type){
-		//case 0:
-			//pos_x =0.0;
-			//pos_y =0.0; 
-			//break;
-		//case 1:
-			//pos_x =0.0;
-			//pos_y =0.0;
-			//break;
-		//case 2:
-			//pos_x = 0.0;
-			//pos_y = 0.0;
-			//break;
-		//default: 
-			//pos_x = 0.0;
-			//pos_y = 0.0;
-			
-	//}
-
-	//for(int idx(0);idx<leg_targetSet.size();idx++){
-        //string num_s = std::to_string(idx);
-        //string person("person ");
-        //string new_str_name=person+num_s;
-         //std::cout<<"person name = "<<new_str_name.c_str()<<std::endl;
-		
-        //people_msgs::PositionMeasurement pos;
-        //pos.header.stamp = ros::Time();
-        //pos.header.frame_id = "/map";
-        //pos.name = "leg_laser";
-        //pos.object_id =new_str_name;
-        //pos.pos.x = leg_targetSet[idx][0];
-        //pos.pos.y = leg_targetSet[idx][1];
-        //pos.pos.z = 1.0;
-        //pos.reliability = 0.85;
-        //pos.covariance[0] = pow(0.01 / pos.reliability, 2.0);
-        //pos.covariance[1] = 0.0;
-        //pos.covariance[2] = 0.0;
-        //pos.covariance[3] = 0.0;
-        //pos.covariance[4] = pow(0.01 / pos.reliability, 2.0);
-        //pos.covariance[5] = 0.0;
-        //pos.covariance[6] = 0.0;
-        //pos.covariance[7] = 0.0;
-        //pos.covariance[8] = 10000.0;
-        //pos.initialization = 0;
-        //people_measurement_pub_.publish(pos);
-        //}
-
-
-}
-
-
-void Dynamic_Manager::updateMap(vector<int>& localmap_, vector<int>& local_start, vector<int>& local_goal)
-{
-	m_static_obs.clear();
-	Policies.clear();	
-	Rewards.clear();
-	U.clear();
-	MdpSols.clear();
-	PolicyNum.clear();
-
-	Policies.resize(pMapParam->MapSize, '0');
- 	Rewards.resize(pMapParam->MapSize, Ra); 
- 	U.resize(pMapParam->MapSize, 0.0); 
- 	Up.resize(pMapParam->MapSize, 0.0); 
- 	MdpSols.resize(pMapParam->MapSize, 0);
- 	PolicyNum.resize(pMapParam->MapSize, 0);
-
- 	m_Start.resize(2,0);	
-    m_Goal.resize(2,0);							
- 	m_Robot.resize(2,0);
-
- 	m_Start[0]=cur_coord[0];
- 	m_Start[1]=cur_coord[1];
-
-	m_Goal[0]=Goal_Coord[0];
- 	m_Goal[1]=Goal_Coord[1];
-
-	// cout<<" Start pos - X :"<<m_Start[0]<<", - Y : "<<m_Start[1]<<endl;
-	// cout<<" Goal pos - X :"<<m_Goal[0]<<", - Y : "<<m_Goal[1]<<endl;
-
- 	for(int i(0);i<localmap_.size();i++)
-	{
-		if(localmap_[i]>2.0 )
-			m_static_obs.push_back(i);
-	}
-
-	vector<int> tempcoord(2,0);
-	for(int i(0);i<m_static_obs.size();i++){
- 		Rewards[m_static_obs[i]]=0.0;
- 		Policies[m_static_obs[i]]='#';
- 	}
-
-
-	Rewards[Coord2CellNum(m_Goal)]=100;
- 	Policies[Coord2CellNum(m_Goal)]='+';
-
- 	printf("Update good!\n");
 }
 
 
@@ -1694,18 +1127,6 @@ vector<int> Dynamic_Manager::Global2LocalCoord(vector<int> Global_coord)
 	return Local_coords;
 }
 
-void Dynamic_Manager::setStartConfig( const vector<int> _Start)
-{
-		m_Start[0]=_Start[0];
-		m_Start[1]=_Start[1];
-}
-
-void Dynamic_Manager::setGoalConfig( const vector<int> _Goal )
-{
-		m_Goal[0]=_Goal[0];
-		m_Goal[1]=_Goal[1];
-
-}
 
 int  Dynamic_Manager::Coord2CellNum(std::vector<int> cell_xy)
 {
@@ -1726,321 +1147,55 @@ void Dynamic_Manager::CellNum2Coord(const int Cell_idx, vector<int>& cell_xy)
 	  cell_xy[1]=res;
 }
 
-bool Dynamic_Manager::MDPsolve()
-{
-	ROS_INFO("Solve");
-    //why colNum==6?
-    int colNum=6;
-	int idx=0;
 
-	Points.clear();
-	Points.resize(colNum);
-	//Check for row-wise or column-wise
-	
-	for(int j(0);j<Y_mapSize;j++){
-		for(int i(0);i<X_mapSize;i++)	
-		{
-			Points[0].push_back(i);
-			Points[1].push_back(j);
-			Points[2].push_back((int)Rewards[idx]);
-			//Points[2].push_back((int)R(i,j));
-			Points[3].push_back(0);			//Up
-			Points[4].push_back(0);			//U
-			//Points[5].push_back(PiNums(i,j));
-			Points[5].push_back(PolicyNum[idx]);
-			idx++;
-		}
-	}	
+//void Dynamic_Manager::setStaticObs(const vector<int> static_obs)
+ //{
+     //for(int i(0);i<static_obs.size();i++){
+         //pMapParam->OCC_Info[static_obs[i]]=St_OBS_CELL;
+     //}
+
+ //}
+
+ //void Dynamic_Manager::setDynamicObs(const vector<int> dynamic_obs){
+
+	//for(int i(0);i<dynamic_obs.size();i++){
+         //pMapParam->OCC_Info[dynamic_obs[i]]=Dy_OBS_CELL;
+     //}
+
+ //}
+
+ //void Dynamic_Manager::setHumanObs(const vector<int> humans){
+
+	//for(int i(0);i<humans.size();i++){
+			 //pMapParam->OCC_Info[humans[i]]=Human_CELL;
+		 //}
+ //}
 
 
-	int 	iters = 0;
-	double  diff  = 0.0;
-	double  delta = 0.0;
-	
-	while(1)
-	{
-		if(Up.size()==U.size()){
-			//cout<<"backup Up"<<endl;
-			for(int i(0);i<Up.size();i++){
-				U[i]=Up[i];
-			}
-		}
-		
-		for(int k(0);k<Num_Grids;k++){
-			updateUprimePi(k);				//update Up and Policy, PolicyNum
-			diff = abs(Up[k]-U[k]);
-
-			//check maxim error for whole states
-			if(diff > delta)
-				delta=diff;
-		}
-
-		//terminal condition
-		if(delta<deltaMin){
-			cout<<"error converged"<<endl;
-			break;
-		}
-		else if(iters>maxiter){
-			cout<<"max iterations"<<endl;
-			break;
-		}
-	
-		iters++;
-	}
-	return false;
-}
-
-void Dynamic_Manager::printPath()
-{
-	for(int i(Y_mapSize-1);i>-1;i--){
-		for(int j(0);j<X_mapSize;j++){
-
-		int pos = i * X_mapSize + j;
-		cout<<Rewards[pos]<<",";
-		//cout<<Policies[pos];
-		}
-		cout<<endl;
-	}
-
-}
-
-void Dynamic_Manager::setStaticObs(const vector<int> static_obs)
- {
- 	for(int i(0);i<static_obs.size();i++){
- 		pMapParam->OCC_Info[static_obs[i]]=St_OBS_CELL;
- 	}
-
- }
-
- void Dynamic_Manager::setDynamicObs(const vector<int> dynamic_obs){
-
-	for(int i(0);i<dynamic_obs.size();i++){
- 		pMapParam->OCC_Info[dynamic_obs[i]]=Dy_OBS_CELL;
- 	}
-
- }
-
- void Dynamic_Manager::setHumanObs(const vector<int> humans){
-
-	for(int i(0);i<humans.size();i++){
-	 		pMapParam->OCC_Info[humans[i]]=Human_CELL;
-	 	}
- }
-
-char Dynamic_Manager::getPolicychar(int policyidx)
-{
-	char policychars;
-	switch(policyidx)
-	{
-
-		case 0:
-			policychars='E';				break;
-		case 1:
-			policychars='R';				break;
-		case 2:
-			policychars='N';				break;
-		case 3:
-			policychars='Q';				break;
-		case 4:
-			policychars='W';				break;
-		case 5:	
-			policychars='Z';				break;
-		case 6:
-			policychars='S';				break;
-		case 7:
-			policychars='C';				break;
-		default: 
-			policychars='X';
-	}
-
-	return policychars;
-}
-
-void Dynamic_Manager::updateUprimePi(int state_id)
-{
-	vector<int> curpos;
-	CellNum2Coord(state_id,curpos);
-	int x_pos=curpos[0];
-	int y_pos=curpos[1];
-	// cout<<"---------------------"<<endl;
-	// cout<<"state_id:"<<state_id<<"x pos :"<<x_pos<<", y pos :"<<y_pos<<endl;
-	// cout<<"---------------------"<<endl;
-
-	//for(int i(0);i<Num_Grids;i++)
-	//cout<<"point[0][k] :"<<Points[0][i]<<", point[1][k] :"<<Points[1][i]<<endl;
-	//cout<<"--------------num of grid :"<<Num_Grids<<endl;
-	//cout<<"Update for Uprime : state_id :"<<state_id<<","<<x_pos<<","<<y_pos<<endl;
-	
-	for(int k(0);k<Num_Grids;k++){
-
-		if(Points[0][k]==x_pos && Points[1][k]==y_pos){
-			
-			//Use bellman equation "computed using U(s), not using U'(s)"
-			if(Rewards[k]!=Ra){	//Up(k)~=Ra)
-				Up[k]=Rewards[k];
-			}
-			else{
-				//cout<<"k:"<<k<<"x pos :"<<x_pos<<", y pos :"<<y_pos<<endl;	
-				//get action index and the maximum reward value corresponding that action index
-				map<int,double> maxmap;
-				getMaxValueAction(x_pos,y_pos,maxmap);
-				map<int,double>::iterator mnaxmapiter=maxmap.begin();
-				
-
-				//cout<<"maxvalue :"<<mnaxmapiter->second<<endl;
-				//Update Uprime and Policyvector and policiesNumvector 
-				// new_up_pi=[Up,Pi,PiNums] in matlab
-				Up[k]=Rewards[k]+gamma*(mnaxmapiter->second);
-				PolicyNum[k]=(mnaxmapiter->first);
-				Policies[k]=getPolicychar(mnaxmapiter->first);
-
-				//cout<<"k:"<<k<<", Up :"<<Up[k]<<", Pi[k] :"<<PolicyNum[k]<<endl;
-
-			}
-		}
-	}
-}
-
-//returns true if cur_pos in inside a map // false is collision
-bool Dynamic_Manager::checkNoBoundary(vector<int> cur_pos)
-{
-	int x_pos=cur_pos[0];
-	int y_pos=cur_pos[1];
-
-	if((x_pos<0) || (x_pos>X_mapSize-1))
-		return false;
-	if((y_pos<0) || (y_pos>Y_mapSize-1))
-		return false;
-		
-	return true;
-
-}
 	
 //returns true if cur_pos is safe (No collision with static obs, ex) Collision : false, NO collision : true
-bool Dynamic_Manager::checkStaticObs(vector<int> cur_pos)
-{
-	// Input:current position 
-	// Output : True or false
+//int Dynamic_Manager::FindMaxIdx(vector<double> dataset)
+//{
+	//map<int,double> MaxIndex;
+	//MaxIndex.insert(make_pair(0,dataset[0]));
+	//int maxIndex=0;
 
-	int x_pos=cur_pos[0];
-	int y_pos=cur_pos[1];
+	//map<int,double>::iterator mapIter = MaxIndex.begin();
 
-	for(int i(0);i<m_static_obs.size();i++)
-	{
-		vector<int> static_obs_pos;
-		CellNum2Coord(m_static_obs[i],static_obs_pos);
-
-		if((x_pos==static_obs_pos[0]) && (y_pos==static_obs_pos[1]))
-			return false;
-	}
-	//cout<<"No static Obs"<<endl;
-	return true;
-}
-
-
-
-bool Dynamic_Manager::checkObs(int cur_stid,int actionNum)
-{
-	// vector<int> cur_pos(2,0);
-	// cur_pos=CellNum2Coord(cur_stid);
-	// vector<int> next_pos(2,0);
-
-	// next_pos[0]= cur_pos[0]+ActionCC[actionNum][0];
-	// next_pos[1]= cur_pos[1]+ActionCC[actionNum][1];
-
-	// cout<<"cur_pos: X : "<<cur_pos[0]<<", Y : "<<cur_pos[1]<<endl;
-	// cout<<"action num : "<<actionNum<<endl;
-	// cout<<"next_pos: X : "<<next_pos[0]<<", Y : "<<next_pos[1]<<endl;
-
-	// if(checkNOBoundary(next_pos) && checkStaticObs(next_pos))
-	// {
-	// 	int next_pos_id=Coord2CellNum(next_pos);
-
-
-	// }
-
-}
-
-
-double Dynamic_Manager::getactionvalue(int x_pos, int y_pos, int action_ix)
-{
-	//Get Current pos coordinate
-	vector<int> cur_pos(2,0);
-	cur_pos[0]=x_pos;
-	cur_pos[1]=y_pos;
-	
-	int cur_st_id=Coord2CellNum(cur_pos);
-
-	//Get next pos coordinate
-	vector<int> next_pos(2,0);
-	next_pos[0]= x_pos+ActionCC[action_ix][0];
-	next_pos[1]= y_pos+ActionCC[action_ix][1];
-
-	 //cout<<"cur st_id :"<<cur_st_id<<endl;
-	//  cout<<"cur_pos: X : "<<x_pos<<", Y : "<<y_pos<<endl;
-	//  cout<<"action num : "<<action_ix<<endl; 
-	//  cout<<"next_pos: X : "<<next_pos[0]<<", Y : "<<next_pos[1]<<endl;
-
-	//Cehck obstacles
-	//check static obstacle
-	if(checkNoBoundary(next_pos) && checkStaticObs(next_pos))
-	{
-		//cout<<"next_pos: X : "<<next_pos[0]<<", Y : "<<next_pos[1]<<endl;
-		//cout<<"No collision"<<endl;
-		int next_pos_id=Coord2CellNum(next_pos);
-		return U[next_pos_id];
-		//Return U
-	}
-	else{
-		//cout<<"collision"<<endl;
-		//cout<<"cur_st_id : "<<cur_st_id<<endl;
-		return U[cur_st_id];
-	}
-}
-
-vector<int> Dynamic_Manager::getneighboractionset(int action_idx)
-{
-	vector<int> neighboractionset(2,0);
-
-	if(action_idx==0){
-		neighboractionset[0]=(action_idx+1);
-		neighboractionset[1]=7;	
-	}
-	else if(action_idx==7){
-		neighboractionset[0]=0;
-		neighboractionset[1]=6;	
-	}
-	else{
-		neighboractionset[0]=(action_idx+1)%Action_dim;
-		neighboractionset[1]=(action_idx-1)%Action_dim;
-	}
-
-	//cout<<"id:"<<action_idx<<", x :"<<neighboractionset[0]<<", y:"<<neighboractionset[1]<<endl;
-	return neighboractionset;
-}
-
-int Dynamic_Manager::FindMaxIdx(vector<double> dataset)
-{
-	map<int,double> MaxIndex;
-	MaxIndex.insert(make_pair(0,dataset[0]));
-	int maxIndex=0;
-
-	map<int,double>::iterator mapIter = MaxIndex.begin();
-
-	for(int i=1;i<dataset.size();i++)
-		{
-			mapIter = MaxIndex.begin();		
+	//for(int i=1;i<dataset.size();i++)
+		//{
+			//mapIter = MaxIndex.begin();		
 			
-			if(mapIter->second<dataset[i])
-			{
-				MaxIndex.clear();
-				MaxIndex.insert(make_pair(i,dataset[i]));
-				maxIndex=i;
-			}
-	}
-	return maxIndex;
+			//if(mapIter->second<dataset[i])
+			//{
+				//MaxIndex.clear();
+				//MaxIndex.insert(make_pair(i,dataset[i]));
+				//maxIndex=i;
+			//}
+	//}
+	//return maxIndex;
 
-}
+//}
 void Dynamic_Manager::Mapcoord2GlobalCoord(const vector<int>& _Mapcoord, vector<double>& GlobalCoord)
 {
 
@@ -2063,47 +1218,39 @@ void Dynamic_Manager::Mapcoord2DynamicCoord(const vector<int>& _Mapcoord, vector
 
 
 //get action(best) in Matlab
-void Dynamic_Manager::getMaxValueAction(int x_pos, int y_pos,map<int,double>& maxmap)
-{
-	double bestvalue=0.0;
-	vector<double> action_value(Action_dim,0.0);
-	vector<double> action_valueSum(Action_dim,0.0);
-	vector<int>    neighbor_action(2,0);
+//void Dynamic_Manager::getMaxValueAction(int x_pos, int y_pos,map<int,double>& maxmap)
+//{
+	//double bestvalue=0.0;
+	//vector<double> action_value(Action_dim,0.0);
+	//vector<double> action_valueSum(Action_dim,0.0);
+	//vector<int>    neighbor_action(2,0);
 	
-	for(int i(0);i<Action_dim;i++)
-	{
-		action_value[i]=getactionvalue(x_pos, y_pos,i);
-		//cout<<"action value:"<<action_value[i]<<endl;
-	}
+	//for(int i(0);i<Action_dim;i++)
+	//{
+		//action_value[i]=getactionvalue(x_pos, y_pos,i);
+        //cout<<"action value:"<<action_value[i]<<endl;
+	//}
 
-	for (int i(0);i<Action_dim;i++)
-	{
-		action_valueSum[i]=Prob_good*action_value[i];
-		neighbor_action=getneighboractionset(i);
+	//for (int i(0);i<Action_dim;i++)
+	//{
+		//action_valueSum[i]=Prob_good*action_value[i];
+		//neighbor_action=getneighboractionset(i);
 
-		for(int j(0);j<2;j++)
-			action_valueSum[i]+=Prob_bad*action_value[neighbor_action[j]];			
-	}
-	//cout<<"Here 3"<<endl;
-	int maxIdx=FindMaxIdx(action_valueSum);
-	bestvalue = action_valueSum[maxIdx];
-	// for(int z(0);z<action_valueSum.size();z++)
-	// 	cout<<"idx :"<<z<<", value :"<<action_valueSum[z]<<endl;
-	// cout<<"maxidx : "<<maxIdx<<", maxvalue: "<<bestvalue<<endl;
-	maxmap.clear();
-	maxmap.insert(make_pair(maxIdx,bestvalue));
-	return;
-}
+		//for(int j(0);j<2;j++)
+			//action_valueSum[i]+=Prob_bad*action_value[neighbor_action[j]];			
+	//}
+    //cout<<"Here 3"<<endl;
+	//int maxIdx=FindMaxIdx(action_valueSum);
+	//bestvalue = action_valueSum[maxIdx];
+     //for(int z(0);z<action_valueSum.size();z++)
+         //cout<<"idx :"<<z<<", value :"<<action_valueSum[z]<<endl;
+     //cout<<"maxidx : "<<maxIdx<<", maxvalue: "<<bestvalue<<endl;
+    //maxmap.clear();
+	//maxmap.insert(make_pair(maxIdx,bestvalue));
+	//return;
+//}
 
 //Function for generating path
-void Dynamic_Manager::pathPublish(){
-	// std_msgs::Int32MultiArray obsmap_msg;
-	// obsmap_msg.data = m_static_obs;
-	// obsmap_Pub.publish(obsmap_msg);
-	// MDPPath.clear();
-}
-//Generate dynamic path from solution
-
 //FixMe
 void Dynamic_Manager::Publish_dynamicPath()
 {
@@ -2136,143 +1283,143 @@ void Dynamic_Manager::Publish_dynamicPath()
 
 }
 
-void Dynamic_Manager::generate_dynamicPath()
-{
-	vector<int> cur_pos(2,0);
-	for(int i(0);i<2;i++)
-		cur_pos[i]=m_Start[i];
+//void Dynamic_Manager::generate_dynamicPath()
+//{
+	//vector<int> cur_pos(2,0);
+	//for(int i(0);i<2;i++)
+		//cur_pos[i]=m_Start[i];
 
-	Dyn_MDPPath.clear();
-	int cur_stid=Coord2CellNum(m_Start);
-	int goal_stid=Coord2CellNum(m_Goal);
+	//Dyn_MDPPath.clear();
+	//int cur_stid=Coord2CellNum(m_Start);
+	//int goal_stid=Coord2CellNum(m_Goal);
 
-	if((goal_stid>pMapParam->MapSize) || (goal_stid<0))
-		return;
+	//if((goal_stid>pMapParam->MapSize) || (goal_stid<0))
+		//return;
 
-	vector<double> t_values;
-	vector<double> x_values;
-	vector<double> y_values;
-	vector<double> dyn_global_coords;
+	//vector<double> t_values;
+	//vector<double> x_values;
+	//vector<double> y_values;
+	//vector<double> dyn_global_coords;
 
-	//convert m_start to dynamic_coordinate
-	Mapcoord2DynamicCoord(m_Start,dyn_global_coords);
+    //convert m_start to dynamic_coordinate
+	//Mapcoord2DynamicCoord(m_Start,dyn_global_coords);
 
-	x_values.push_back(dyn_global_coords[0]);
-	y_values.push_back(dyn_global_coords[1]);
-	cout<<"cur st id : "<<cur_stid<<endl;
+	//x_values.push_back(dyn_global_coords[0]);
+	//y_values.push_back(dyn_global_coords[1]);
+	//cout<<"cur st id : "<<cur_stid<<endl;
 	
-	Dyn_MDPPath.push_back(cur_stid);
-	int pathcount=0;
+	//Dyn_MDPPath.push_back(cur_stid);
+	//int pathcount=0;
 
-	while(1)
-	{
-		cur_stid=Coord2CellNum(cur_pos);
-		if(cur_stid==goal_stid)
-			break;
-		//get next position from policy solution
-		for(int i(0);i<2;i++)
-			cur_pos[i]+=ActionCC[PolicyNum[cur_stid]][i];
+	//while(1)
+	//{
+		//cur_stid=Coord2CellNum(cur_pos);
+		//if(cur_stid==goal_stid)
+			//break;
+        //get next position from policy solution
+		//for(int i(0);i<2;i++)
+			//cur_pos[i]+=ActionCC[PolicyNum[cur_stid]][i];
 
-		Mapcoord2DynamicCoord(cur_pos,dyn_global_coords);
-		ROS_INFO("cur pos  : %d, x:  %d, y // global goal x : %.3lf , global goal y : %.3lf \n",cur_pos[0], cur_pos[1],dyn_global_coords[0],dyn_global_coords[1]);
-		x_values.push_back(dyn_global_coords[0]);
-		y_values.push_back(dyn_global_coords[1]);
-		cur_stid=Coord2CellNum(cur_pos);
-		Dyn_MDPPath.push_back(cur_stid);
+		//Mapcoord2DynamicCoord(cur_pos,dyn_global_coords);
+		//ROS_INFO("cur pos  : %d, x:  %d, y // global goal x : %.3lf , global goal y : %.3lf \n",cur_pos[0], cur_pos[1],dyn_global_coords[0],dyn_global_coords[1]);
+		//x_values.push_back(dyn_global_coords[0]);
+		//y_values.push_back(dyn_global_coords[1]);
+		//cur_stid=Coord2CellNum(cur_pos);
+		//Dyn_MDPPath.push_back(cur_stid);
 
-		//ROS_INFO("Id : %d, x:  %d, y : %d \n",cur_stid, cur_pos);
+        //ROS_INFO("Id : %d, x:  %d, y : %d \n",cur_stid, cur_pos);
 
-		if(pathcount>20)
-			return;
+		//if(pathcount>20)
+			//return;
 
-		pathcount++;
+		//pathcount++;
 		
-	}
+	//}
 
 
 
-	//Making Spline path============================================
-	int data_size=x_values.size();
-	for(int k=0;k<data_size;k++)
-		printf("spline path index : %d, x_values : %lf , y values : %lf \n", k,x_values[k],y_values[k]);
+    //Making Spline path============================================
+	//int data_size=x_values.size();
+	//for(int k=0;k<data_size;k++)
+		//printf("spline path index : %d, x_values : %lf , y values : %lf \n", k,x_values[k],y_values[k]);
 
-	//Making t-vetors;
-	t_values.resize(x_values.size());
-	//t_values[0]=0;
-	double time_length=1.0;
-	double time_const=(time_length)/(data_size-1);
-	for(int k(0);k<data_size;k++)
-		t_values[k]=k*time_const;
+    //Making t-vetors;
+	//t_values.resize(x_values.size());
+    //t_values[0]=0;
+	//double time_length=1.0;
+	//double time_const=(time_length)/(data_size-1);
+	//for(int k(0);k<data_size;k++)
+		//t_values[k]=k*time_const;
 	
-	m_CubicSpline_x = new srBSpline;
-	m_CubicSpline_x->_Clear();
+	//m_CubicSpline_x = new srBSpline;
+	//m_CubicSpline_x->_Clear();
 
-	m_CubicSpline_y = new srBSpline;
-	m_CubicSpline_y->_Clear();
+	//m_CubicSpline_y = new srBSpline;
+	//m_CubicSpline_y->_Clear();
 
-	vector<double> Spline_x;
-	vector<double> Spline_y;
-	m_CubicSpline_x->CubicSplineInterpolation(t_values,x_values,x_values.size());
-	m_CubicSpline_y->CubicSplineInterpolation(t_values,y_values,y_values.size());
+	//vector<double> Spline_x;
+	//vector<double> Spline_y;
+	//m_CubicSpline_x->CubicSplineInterpolation(t_values,x_values,x_values.size());
+	//m_CubicSpline_y->CubicSplineInterpolation(t_values,y_values,y_values.size());
 
-	int path_size=5;
-	if(data_size<4)
-		path_size=2;
+	//int path_size=5;
+	//if(data_size<4)
+		//path_size=2;
 
-	double const_path=(time_length)/ path_size ;
+	//double const_path=(time_length)/ path_size ;
 
-	Spline_x.push_back(x_values[0]);
-	Spline_y.push_back(y_values[0]);
+	//Spline_x.push_back(x_values[0]);
+	//Spline_y.push_back(y_values[0]);
 
-	double ret_x=0.0;
-	double ret_y=0.0;
-	double t_idx=0.0;
-	 for(int j(0);j<path_size;j++){
-  	   t_idx=(j+1)*const_path;
-       m_CubicSpline_x->getCurvePoint(ret_x,t_idx);
-       m_CubicSpline_y->getCurvePoint(ret_y,t_idx);
+	//double ret_x=0.0;
+	//double ret_y=0.0;
+	//double t_idx=0.0;
+	 //for(int j(0);j<path_size;j++){
+         //t_idx=(j+1)*const_path;
+       //m_CubicSpline_x->getCurvePoint(ret_x,t_idx);
+       //m_CubicSpline_y->getCurvePoint(ret_y,t_idx);
 
-       if(!std::isnan(ret_x))
-       	Spline_x.push_back(ret_x);
-       if(!std::isnan(ret_y))
-       	Spline_y.push_back(ret_y);
-     }
+       //if(!std::isnan(ret_x))
+           //Spline_x.push_back(ret_x);
+       //if(!std::isnan(ret_y))
+           //Spline_y.push_back(ret_y);
+     //}
     
     //Publish SPline Path
-  	nav_msgs::Path dynamicSplinePath;
-  	dynamicSplinePath.header.frame_id = "map";
-  	geometry_msgs::PoseStamped pose;
-  	
-  	for (int i = 0; i < Spline_x.size(); i++)
- 	{
-	    pose.pose.position.x=Spline_x[i];
-	   	pose.pose.position.y=Spline_y[i];
-	    // pose.pose.position.x=Spline_x[i]*0.25-3.5-0.5*0.25;
-	   	// pose.pose.position.y=Spline_y[i]*0.25-3.5-0.5*0.25;
-	   	printf("spline path2 index : %d, x coord : %lf , y coord : %lf \n", i,pose.pose.position.x,pose.pose.position.y);
-	   	pose.pose.orientation = tf::createQuaternionMsgFromYaw(m_desired_heading);
-	   	dynamicSplinePath.poses.push_back(pose);
-	}
+      //nav_msgs::Path dynamicSplinePath;
+      //dynamicSplinePath.header.frame_id = "map";
+      //geometry_msgs::PoseStamped pose;
+      
+      //for (int i = 0; i < Spline_x.size(); i++)
+     //{
+		//pose.pose.position.x=Spline_x[i];
+		   //pose.pose.position.y=Spline_y[i];
+         //pose.pose.position.x=Spline_x[i]*0.25-3.5-0.5*0.25;
+            //pose.pose.position.y=Spline_y[i]*0.25-3.5-0.5*0.25;
+		   //printf("spline path2 index : %d, x coord : %lf , y coord : %lf \n", i,pose.pose.position.x,pose.pose.position.y);
+		   //pose.pose.orientation = tf::createQuaternionMsgFromYaw(m_desired_heading);
+		   //dynamicSplinePath.poses.push_back(pose);
+	//}
 
-	 //SplinePath_pub.publish(path);
-	 SplinePath_pub2.publish(dynamicSplinePath);
+     //SplinePath_pub.publish(path);
+	 //SplinePath_pub2.publish(dynamicSplinePath);
 	
-	// Publish static map_path_grid
-	for(int j(0);j<Scaled_dynamic_map_path.data.size();j++)
-	 {	
-	 	Scaled_dynamic_map_path.data[j]=0.0;
-	 }
+     //Publish static map_path_grid
+	//for(int j(0);j<Scaled_dynamic_map_path.data.size();j++)
+	 //{	
+		 //Scaled_dynamic_map_path.data[j]=0.0;
+	 //}
 
 
-	 for(int k(0); k<Dyn_MDPPath.size();k++)
-	 	Scaled_dynamic_map_path.data[Dyn_MDPPath[k]]=90;
+	 //for(int k(0); k<Dyn_MDPPath.size();k++)
+		 //Scaled_dynamic_map_path.data[Dyn_MDPPath[k]]=90;
 
-	 Scaled_dynamic_map_path.header.stamp =  ros::Time::now();
-	 Scaled_dynamic_map_path.header.frame_id = "map"; 
-     Scaled_dynamic_map_path_pub.publish(Scaled_dynamic_map_path);
+	 //Scaled_dynamic_map_path.header.stamp =  ros::Time::now();
+	 //Scaled_dynamic_map_path.header.frame_id = "map"; 
+     //Scaled_dynamic_map_path_pub.publish(Scaled_dynamic_map_path);
 
     //MDP solution publsih
-}
+//}
 
 
 void Dynamic_Manager::publish_cameraregion()
@@ -2509,165 +1656,24 @@ bool Dynamic_Manager::getlinevalue(int line_type,double input_x, double input_y)
 }
 
 
-void Dynamic_Manager::publishZeropaths()
-{
+//void Dynamic_Manager::publishZeropaths()
+//{
 
-	  	nav_msgs::Path ZeroSplinePath;
-  		ZeroSplinePath.header.frame_id = "map";
-  		geometry_msgs::PoseStamped zeropose;
-  	
+		  //nav_msgs::Path ZeroSplinePath;
+          //ZeroSplinePath.header.frame_id = "map";
+          //geometry_msgs::PoseStamped zeropose;
+      
 	
-	    zeropose.pose.position.x=CurVector[0];
-	   	zeropose.pose.position.y=CurVector[1];
-	   	zeropose.pose.orientation = tf::createQuaternionMsgFromYaw(m_desired_heading);
-	   	ZeroSplinePath.poses.push_back(zeropose);
-	   	// printf("spline path2 index : %d, x coord : %lf , y coord : %lf \n", i,zeropose.pose.position.x,zeropose.pose.position.y);
+		//zeropose.pose.position.x=CurVector[0];
+		   //zeropose.pose.position.y=CurVector[1];
+		   //zeropose.pose.orientation = tf::createQuaternionMsgFromYaw(m_desired_heading);
+		   //ZeroSplinePath.poses.push_back(zeropose);
+            //printf("spline path2 index : %d, x coord : %lf , y coord : %lf \n", i,zeropose.pose.position.x,zeropose.pose.position.y);
 	
-	SplinePath_pub2.publish(ZeroSplinePath);
+	//SplinePath_pub2.publish(ZeroSplinePath);
 
-}
+//}
 
 
-void Dynamic_Manager::publishpaths()
-{
-	// if(booltrackHuman)
- 	// {
- 		SplinePath_pub.publish(path);
-		//SplinePath_pub2.publish(Pre_dynamicSplinePath);
-		Scaled_dynamic_map_path_pub.publish(Scaled_dynamic_map_path);
-	// }
-	// else
-	// {	
-	// 	//publishZeropaths();
-
-	// }
-}
 
 //Generate path from solution
-void Dynamic_Manager::generatePath()
-{
-	vector<int> cur_pos(2,0);
-	for(int i(0);i<2;i++)
-		cur_pos[i]=m_Start[i];
-
-	MDPPath.clear();
-	int cur_stid=Coord2CellNum(m_Start);
-	int goal_stid=Coord2CellNum(m_Goal);
-
-	
-	vector<double> t_values;
-	vector<double> x_values;
-	vector<double> y_values;
-	vector<double> global_coords;
-
-	//double* = new double [13]
-
-	// x_values.push_back(m_Start[0]);
-	// y_values.push_back(m_Start[1]);
-
-	Mapcoord2GlobalCoord(m_Start,global_coords);
-	x_values.push_back(global_coords[0]);
-	y_values.push_back(global_coords[1]);
-
-	cout<<"cur st id : "<<cur_stid<<endl;
-	MDPPath.push_back(cur_stid);
-	
-	while(1)
-	{
-		//get next position from policy solution
-		for(int i(0);i<2;i++)
-			cur_pos[i]+=ActionCC[PolicyNum[cur_stid]][i];
-
-		Mapcoord2GlobalCoord(cur_pos,global_coords);
-		ROS_INFO("cur pos Id : %d, x:  %d, y // global x : %.3lf , global y : %.3lf \n",cur_pos[0], cur_pos[1],global_coords[0],global_coords[1]);
-
-		x_values.push_back(global_coords[0]);
-		y_values.push_back(global_coords[1]);
-
-		cur_stid=Coord2CellNum(cur_pos);
-		MDPPath.push_back(cur_stid);
-
-		//ROS_INFO("Id : %d, x:  %d, y : %d \n",cur_stid, cur_pos);
-
-		if(cur_stid==goal_stid)
-			break;
-	}
-
-	//Making Spline path=======================
-	int data_size=x_values.size();
-	//for(int k=0;k<data_size;k++)
-		//printf("spline path index : %d, x_values : %lf , y values : %lf \n", k,x_values[k],y_values[k]);
-
-	//Making t-vetors;
-	t_values.resize(x_values.size());
-	//t_values[0]=0;
-	double time_length=1.0;
-	double time_const=(time_length)/data_size;
-	for(int k(0);k<data_size;k++)
-		t_values[k]=k*time_const;
-	
-	m_CubicSpline_x = new srBSpline;
-	m_CubicSpline_x->_Clear();
-
-	m_CubicSpline_y = new srBSpline;
-	m_CubicSpline_y->_Clear();
-
-	vector<double> Spline_x;
-	vector<double> Spline_y;
-	m_CubicSpline_x->CubicSplineInterpolation(t_values,x_values,x_values.size());
-	m_CubicSpline_y->CubicSplineInterpolation(t_values,y_values,y_values.size());
-
-	int path_size=8;	
-	double const_path=(time_length)/ path_size ;
-
-	Spline_x.push_back(x_values[0]);
-	Spline_y.push_back(y_values[0]);
-
-	double ret_x=0.0;
-	double ret_y=0.0;
-	double t_idx=0.0;
-	 for(int j(0);j<path_size;j++){
-  	   t_idx=(j+1)*const_path;
-       m_CubicSpline_x->getCurvePoint(ret_x,t_idx);
-       m_CubicSpline_y->getCurvePoint(ret_y,t_idx);
-
-       Spline_x.push_back(ret_x);
-       Spline_y.push_back(ret_y);
-     }
-
-     //Publish SPline Path
-  	nav_msgs::Path path ;
-  	path.header.frame_id = "map";
-  	geometry_msgs::PoseStamped pose;
-	// pose.header.frame_id = "map_local";
-
-	 for (int i = 0; i < Spline_x.size(); i++)
- 	 {	    	    
-	    pose.pose.position.x = Spline_x[i];
-	    pose.pose.position.y = Spline_y[i];
-	    printf("spline path index : %d, x coord : %lf , y coord : %lf \n", i,pose.pose.position.x,pose.pose.position.y);
-	    pose.pose.orientation = tf::createQuaternionMsgFromYaw(0.05);
-	    path.poses.push_back(pose);
-	}
-	 
-	 SplinePath_pub.publish(path);
-
-	 // Publish static map_path
-
-    //MDP solution publsih
-    std_msgs::Int32MultiArray MDPsolution_msg;
-	
-	MDPsolution_msg.data.resize(PolicyNum.size()); 
-	for(int i(0);i<PolicyNum.size();i++)
-		MDPsolution_msg.data[i]=PolicyNum[i];
-	MDPSol_pub.publish(MDPsolution_msg);
-
-	//Publish path after planning
-	// std_msgs::Int32MultiArray pathmap_msg;
-	// pathmap_msg.data = MDPPath;
-	// Path_Pub.publish(pathmap_msg);
-	// ROS_INFO("publish");
-}	
-
-
-
