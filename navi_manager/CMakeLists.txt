@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(navi_manager)	
 
-SET(SOURCES src/MDPmanager.cpp src/Dynamic_Manager.cpp src/srBSpline.cpp src/MapParam.cpp src/PathManager.cpp)
+SET(SOURCES src/MDPmanager.cpp src/Dynamic_Manager.cpp src/srBSpline.cpp
+    src/MapParam.cpp src/PathManager.cpp src/dynamic_window.cpp)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -57,6 +58,9 @@ target_link_libraries(global_planner ${catkin_LIBRARIES})
 
 add_executable(dynamic_planner src/dynamic_planner.cpp ${SOURCES})
 target_link_libraries(dynamic_planner ${catkin_LIBRARIES})
+
+add_executable(dynamic_window src/window_test.cpp ${SOURCES})
+target_link_libraries(dynamic_window ${catkin_LIBRARIES})
 
 add_executable(path_follow src/follow_test.cpp ${SOURCES})
 target_link_libraries(path_follow ${catkin_LIBRARIES})
