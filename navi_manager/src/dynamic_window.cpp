@@ -24,7 +24,6 @@ Dynamic_window::~Dynamic_window()
 }
 
 
-
 void Dynamic_window::Init()
 {
 	cout<<"Initialize"<<endl;
@@ -278,21 +277,24 @@ void Dynamic_window::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr
 	double original_x=msg->info.origin.position.x;
 	double original_y=msg->info.origin.position.y;
 	double oroginal_res=0.05;					//0.05
+    double dyn_offset =0.0;
 
 	//for dynamic map space map
-	Scaled_dynamic_map.info.width=10;
-	Scaled_dynamic_map.info.height= 10;
-	Scaled_dynamic_map.info.resolution=0.75;
-	Scaled_dynamic_map.info.origin.position.x=CurVector[0]-DYN_OFFSET_X-0.5*Scaled_dynamic_map.info.resolution;
-	Scaled_dynamic_map.info.origin.position.y=CurVector[1]-DYN_OFFSET_Y-0.5*Scaled_dynamic_map.info.resolution;
+	Scaled_dynamic_map.info.width=5;
+	Scaled_dynamic_map.info.height= 5;
+	Scaled_dynamic_map.info.resolution=1.0;
+    dyn_offset=0.5*Scaled_dynamic_map.info.width*Scaled_dynamic_map.info.resolution;
+	Scaled_dynamic_map.info.origin.position.x=CurVector[0]-dyn_offset-0.5*Scaled_dynamic_map.info.resolution;
+	Scaled_dynamic_map.info.origin.position.y=CurVector[1]-dyn_offset-0.5*Scaled_dynamic_map.info.resolution;
 	// Scaled_dynamic_map.info.origin.position.x=CurVector[0]-0.5*Scaled_dynamic_map.info.width*0.5;
 	// Scaled_dynamic_map.info.origin.position.y=CurVector[1]-0.5*Scaled_dynamic_map.info.height*0.5;
 	Scaled_dynamic_map.data.resize(Scaled_dynamic_map.info.width*Scaled_dynamic_map.info.height);
 
 
-	Scaled_dynamic_map_path.info.width=10;
-	Scaled_dynamic_map_path.info.height= 10;
-	Scaled_dynamic_map_path.info.resolution=0.75;
+
+	Scaled_dynamic_map_path.info.width=5;
+	Scaled_dynamic_map_path.info.height= 5;
+	Scaled_dynamic_map_path.info.resolution=1.0;
 	Scaled_dynamic_map_path.info.origin.position.x=CurVector[0]-DYN_OFFSET_X-0.5*Scaled_dynamic_map.info.resolution;
 	Scaled_dynamic_map_path.info.origin.position.y=CurVector[1]-DYN_OFFSET_Y-0.5*Scaled_dynamic_map.info.resolution;
 
@@ -331,7 +333,7 @@ void Dynamic_window::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr
 				 	numcount++;
    			}
 
-   			if(numcount>35)
+   			if(numcount>10)
    				scaled_result=50;
    			else
    				scaled_result=0;

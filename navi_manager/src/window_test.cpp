@@ -18,22 +18,15 @@
 
 using namespace Eigen;
 
-bool boolSolve=false;
-MapParam   dynamicmapParam(10,10,0.75);
-static int  Receive_count=0;
+//MapParam   dynamicmapParam(10,10,0.75);
 
-void CmdIntCallback(const std_msgs::Int8::ConstPtr& msg)
-{
-
-
-}
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "dynamic_planner");
+  ros::init(argc, argv, "dynamic_window");
   
   Dynamic_window window_manager; 
-  //problemmanager.setRosObj(&nodeObj);
+  MapParam   dynamicmapParam(5,5,1.0);
   window_manager.setPMapParam(&dynamicmapParam);
 
   // ros::Rate r(5);
@@ -43,7 +36,6 @@ int main(int argc, char **argv)
   ros::Subscriber global_pos_sub;
   ros::Subscriber jointstates_sub;
   ros::Subscriber  human_yolo_sub;
-  ros::Subscriber filtered_result_sub;
   ros::NodeHandle n;
   
   dynamicmap_sub   = n.subscribe<nav_msgs::OccupancyGrid>("/dynamic_obstacle_map_ref", 30, &Dynamic_window::dynamic_mapCallback,&window_manager); 

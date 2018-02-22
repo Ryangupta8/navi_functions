@@ -33,16 +33,6 @@
 #include <cmath>
 #include <cfloat>
 
-#define FREE_CELL 0
-#define St_OBS_CELL 1
-#define Dy_OBS_CELL 1
-#define Human_CELL 3
-
-#define Start_X 1
-#define Start_Y 1
-//80 20
-#define Goal_X 2
-#define Goal_Y 2
 
 #define DYN_OFFSET_X 3.5
 #define DYN_OFFSET_Y 3.5
@@ -50,7 +40,6 @@
 #define LASER_range_person  2.5
 #define YOLO_range_person   4.0
 
-#define ra (-1.0)
 #define FOVW 40       //field of view width
 #define MATH_PI 3.14159265359
 
@@ -72,17 +61,15 @@ class Dynamic_window
  	int               Y_mapSize;
  	int               Num_Grids;
 	vector<int>		  cell_xy;
- 	vector<int>       m_localoccupancy;
  	vector<int>       m_dynamic_occupancy;
  	int  			  num_of_detected_human_yolo;
- 	vector<double>    filtered_target;
 
  	//human sets
     std::vector< std::vector< double > > cur_people;
     std::vector<int> human_occupied_idx;
 	std::vector<int> human_occupied_leg_idx;
 	std::vector<int> visiblie_idx_set;
-	std::vector<double> Head_Pos; 	
+	std::vector<double> Head_Pos;
 	std::vector<double> global_pose;
  	std::vector<double> Map_orig_Vector;
 	std::vector<double> CurVector;
@@ -90,11 +77,11 @@ class Dynamic_window
  	int Local_X_start;
  	int Local_Y_start;
     int dyn_path_num;
- 	vector<int>  MDPPath;
- 	vector<int>  Dyn_MDPPath;
- 	srBSpline*          m_Spline;
- 	srBSpline*          m_CubicSpline_x;
- 	srBSpline*          m_CubicSpline_y;
+ 	vector<int>      MDPPath;
+ 	vector<int>      Dyn_MDPPath;
+ 	srBSpline*       m_Spline;
+ 	srBSpline*       m_CubicSpline_x;
+ 	srBSpline*       m_CubicSpline_y;
 
 
 	ros::NodeHandle  m_node;
@@ -111,8 +98,8 @@ class Dynamic_window
 	nav_msgs::OccupancyGrid Scaled_dynamic_map;
 	nav_msgs::OccupancyGrid Scaled_static_map_path;
 	nav_msgs::OccupancyGrid Scaled_dynamic_map_path;
-	nav_msgs::OccupancyGrid Human_Belief_Scan_map;
-	nav_msgs::Path Pre_dynamicSplinePath;
+    nav_msgs::OccupancyGrid Human_Belief_Scan_map;
+	//nav_msgs::Path Pre_dynamicSplinePath;
 	nav_msgs::Path path;
 	
 	//functions

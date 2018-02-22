@@ -36,7 +36,6 @@ ClikedpointCallback	navi_manager/src/dynamic_window.cpp	/^void Dynamic_window::C
 ClikedpointCallback	navi_service/src/clicked_navi_test.cpp	/^  void ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:click_navi_manager
 ClikedpointCallback	navi_service/src/navi_service_node.cpp	/^void villa_navi_srv::ClikedpointCallback(const geometry_msgs::PointStamped::ConstPtr& msg)$/;"	f	class:villa_navi_srv
 CmdIntCallback	navi_manager/src/dynamic_planner.cpp	/^void CmdIntCallback(const std_msgs::Int8::ConstPtr& msg)$/;"	f
-CmdIntCallback	navi_manager/src/window_test.cpp	/^void CmdIntCallback(const std_msgs::Int8::ConstPtr& msg)$/;"	f
 Comparetwopoistions	navi_manager/src/Dynamic_Manager.cpp	/^bool Dynamic_Manager::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:Dynamic_Manager
 Comparetwopoistions	navi_manager/src/MDPmanager.cpp	/^bool MDPManager::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:MDPManager
 Comparetwopoistions	navi_manager/src/dynamic_window.cpp	/^bool Dynamic_window::Comparetwopoistions(std::vector<double> pos,std::vector<double> pos2, double criterion)$/;"	f	class:Dynamic_window
@@ -72,17 +71,16 @@ DEG2RAD	navi_manager/include/types.h	/^inline real_s DEG2RAD(float d) { return (
 DEG2RAD	navi_manager/include/types.h	/^inline real_s DEG2RAD(int d)	 { return (d * SR_RADIAN); }$/;"	f
 DYN_OFFSET_X	navi_manager/include/Dynamic_Manager.h	48;"	d
 DYN_OFFSET_X	navi_manager/include/MDPmanager.h	48;"	d
-DYN_OFFSET_X	navi_manager/include/dynamic_window.h	47;"	d
+DYN_OFFSET_X	navi_manager/include/dynamic_window.h	37;"	d
 DYN_OFFSET_Y	navi_manager/include/Dynamic_Manager.h	49;"	d
 DYN_OFFSET_Y	navi_manager/include/MDPmanager.h	49;"	d
-DYN_OFFSET_Y	navi_manager/include/dynamic_window.h	48;"	d
+DYN_OFFSET_Y	navi_manager/include/dynamic_window.h	38;"	d
 Distance3D	navi_manager/src/srBSpline.cpp	/^double srBSpline::Distance3D( double* Q1, double* Q2 )$/;"	f	class:srBSpline
 Dy_OBS_CELL	navi_manager/include/Dynamic_Manager.h	39;"	d
 Dy_OBS_CELL	navi_manager/include/MDPmanager.h	37;"	d
-Dy_OBS_CELL	navi_manager/include/dynamic_window.h	38;"	d
 Dyn_MDPPath	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>  Dyn_MDPPath;$/;"	m	class:Dynamic_Manager
 Dyn_MDPPath	navi_manager/include/MDPmanager.h	/^ 	vector<int>  Dyn_MDPPath;$/;"	m	class:MDPManager
-Dyn_MDPPath	navi_manager/include/dynamic_window.h	/^ 	vector<int>  Dyn_MDPPath;$/;"	m	class:Dynamic_window
+Dyn_MDPPath	navi_manager/include/dynamic_window.h	/^ 	vector<int>      Dyn_MDPPath;$/;"	m	class:Dynamic_window
 Dynamic_Manager	navi_manager/include/Dynamic_Manager.h	/^ 	Dynamic_Manager():maxiter(Maxiteration),Action_dim(8),gamma(1),Ra(ra),publishnum(0),Yolo_iter(0),m_boolSolve(false),OnceTarget(false){}$/;"	f	class:Dynamic_Manager
 Dynamic_Manager	navi_manager/include/Dynamic_Manager.h	/^class Dynamic_Manager$/;"	c
 Dynamic_Manager	navi_manager/src/Dynamic_Manager.cpp	/^Dynamic_Manager::Dynamic_Manager(MapParam* _pMapParam):maxiter(Maxiteration),Action_dim(8),gamma(1),Ra(ra),publishnum(0),ReceiveData(0),m_boolSolve(false),dyn_path_num(0)$/;"	f	class:Dynamic_Manager
@@ -90,10 +88,9 @@ Dynamic_window	navi_manager/include/dynamic_window.h	/^ 	Dynamic_window(){}$/;"	
 Dynamic_window	navi_manager/include/dynamic_window.h	/^class Dynamic_window$/;"	c
 Dynamic_window	navi_manager/src/dynamic_window.cpp	/^Dynamic_window::Dynamic_window(MapParam* _pMapParam)$/;"	f	class:Dynamic_window
 FOVW	navi_manager/include/Dynamic_Manager.h	61;"	d
-FOVW	navi_manager/include/dynamic_window.h	54;"	d
+FOVW	navi_manager/include/dynamic_window.h	43;"	d
 FREE_CELL	navi_manager/include/Dynamic_Manager.h	37;"	d
 FREE_CELL	navi_manager/include/MDPmanager.h	35;"	d
-FREE_CELL	navi_manager/include/dynamic_window.h	36;"	d
 Feature_dim	navi_manager/include/Dynamic_Manager.h	/^ 	int 	          Feature_dim;$/;"	m	class:Dynamic_Manager
 Feature_dim	navi_manager/include/MDPmanager.h	/^ 	int 	          Feature_dim;$/;"	m	class:MDPManager
 Filtered_leg_human	navi_manager/include/Dynamic_Manager.h	/^ 	std::vector< std::vector< double > > Filtered_leg_human;$/;"	m	class:Dynamic_Manager
@@ -126,22 +123,19 @@ Goal_Coord	navi_manager/include/Dynamic_Manager.h	/^	std::vector<int> Goal_Coord
 Goal_Coord	navi_manager/include/MDPmanager.h	/^	std::vector<int> Goal_Coord;$/;"	m	class:MDPManager
 Goal_X	navi_manager/include/Dynamic_Manager.h	45;"	d
 Goal_X	navi_manager/include/MDPmanager.h	45;"	d
-Goal_X	navi_manager/include/dynamic_window.h	44;"	d
 Goal_Y	navi_manager/include/Dynamic_Manager.h	46;"	d
 Goal_Y	navi_manager/include/MDPmanager.h	46;"	d
-Goal_Y	navi_manager/include/dynamic_window.h	45;"	d
 Grid_Num_X	navi_manager/include/MapParam.h	16;"	d
 Grid_Num_Y	navi_manager/include/MapParam.h	17;"	d
 Grid_STEP	navi_manager/include/MapParam.h	15;"	d
 Head_Pos	navi_manager/include/Dynamic_Manager.h	/^	std::vector<double> Head_Pos; 	$/;"	m	class:Dynamic_Manager
-Head_Pos	navi_manager/include/dynamic_window.h	/^	std::vector<double> Head_Pos; 	$/;"	m	class:Dynamic_window
+Head_Pos	navi_manager/include/dynamic_window.h	/^	std::vector<double> Head_Pos;$/;"	m	class:Dynamic_window
 HeadingVector	navi_manager/include/Dynamic_Manager.h	/^	std::vector<double> HeadingVector;$/;"	m	class:Dynamic_Manager
 HeadingVector	navi_manager/include/MDPmanager.h	/^	std::vector<double> HeadingVector;$/;"	m	class:MDPManager
 Human_Belief_Scan_map	navi_manager/include/Dynamic_Manager.h	/^	nav_msgs::OccupancyGrid Human_Belief_Scan_map;$/;"	m	class:Dynamic_Manager
-Human_Belief_Scan_map	navi_manager/include/dynamic_window.h	/^	nav_msgs::OccupancyGrid Human_Belief_Scan_map;$/;"	m	class:Dynamic_window
+Human_Belief_Scan_map	navi_manager/include/dynamic_window.h	/^    nav_msgs::OccupancyGrid Human_Belief_Scan_map;$/;"	m	class:Dynamic_window
 Human_CELL	navi_manager/include/Dynamic_Manager.h	40;"	d
 Human_CELL	navi_manager/include/MDPmanager.h	38;"	d
-Human_CELL	navi_manager/include/dynamic_window.h	39;"	d
 Human_Goal_Coord	navi_manager/include/Dynamic_Manager.h	/^	std::vector<int> Human_Goal_Coord;$/;"	m	class:Dynamic_Manager
 Human_Goal_Coord	navi_manager/include/MDPmanager.h	/^	std::vector<int> Human_Goal_Coord;$/;"	m	class:MDPManager
 Human_MarkerArrayCallback	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::Human_MarkerArrayCallback(const visualization_msgs::MarkerArray::ConstPtr& msg)$/;"	f	class:Dynamic_Manager
@@ -165,7 +159,7 @@ IsinDynamicMap	navi_manager/src/MDPmanager.cpp	/^bool MDPManager::IsinDynamicMap
 IsinDynamicMap	navi_manager/src/dynamic_window.cpp	/^bool Dynamic_window::IsinDynamicMap(float global_x, float global_y)$/;"	f	class:Dynamic_window
 LASER_range_person	navi_manager/include/Dynamic_Manager.h	54;"	d
 LASER_range_person	navi_manager/include/MDPmanager.h	55;"	d
-LASER_range_person	navi_manager/include/dynamic_window.h	50;"	d
+LASER_range_person	navi_manager/include/dynamic_window.h	40;"	d
 Leg_boxes_pub	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   Leg_boxes_pub;$/;"	m	class:Dynamic_Manager
 Local_X_start	navi_manager/include/Dynamic_Manager.h	/^ 	int Local_X_start;$/;"	m	class:Dynamic_Manager
 Local_X_start	navi_manager/include/MDPmanager.h	/^ 	int Local_X_start;$/;"	m	class:MDPManager
@@ -177,13 +171,13 @@ Local_mapCallback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::Local_mapCa
 Localmap_sub	navi_manager/include/MDPmanager.h	/^	ros::Subscriber  Localmap_sub;$/;"	m	class:MDPManager
 MARKERS_MAX	navi_manager/scripts/human_marker.py	/^MARKERS_MAX = 100$/;"	v
 MATH_PI	navi_manager/include/Dynamic_Manager.h	62;"	d
-MATH_PI	navi_manager/include/dynamic_window.h	55;"	d
+MATH_PI	navi_manager/include/dynamic_window.h	44;"	d
 MDPManager	navi_manager/include/MDPmanager.h	/^ 	MDPManager():maxiter(Maxiteration),Action_dim(8),gamma(1),Ra(ra),publishnum(0),m_boolPath(false),m_boolSolve(false){}$/;"	f	class:MDPManager
 MDPManager	navi_manager/include/MDPmanager.h	/^class MDPManager$/;"	c
 MDPManager	navi_manager/src/MDPmanager.cpp	/^MDPManager::MDPManager(MapParam* _pMapParam):maxiter(Maxiteration),Action_dim(8),gamma(1),Ra(ra),publishnum(0),ReceiveData(0),m_boolSolve(false),dyn_path_num(0)$/;"	f	class:MDPManager
 MDPPath	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>  MDPPath;$/;"	m	class:Dynamic_Manager
 MDPPath	navi_manager/include/MDPmanager.h	/^ 	vector<int>  MDPPath;$/;"	m	class:MDPManager
-MDPPath	navi_manager/include/dynamic_window.h	/^ 	vector<int>  MDPPath;$/;"	m	class:Dynamic_window
+MDPPath	navi_manager/include/dynamic_window.h	/^ 	vector<int>      MDPPath;$/;"	m	class:Dynamic_window
 MDPSol_pub	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   MDPSol_pub;$/;"	m	class:Dynamic_Manager
 MDPSol_pub	navi_manager/include/MDPmanager.h	/^	ros::Publisher   MDPSol_pub;$/;"	m	class:MDPManager
 MDPsolPublish	navi_manager/src/MDPmanager.cpp	/^void MDPManager::MDPsolPublish()$/;"	f	class:MDPManager
@@ -240,7 +234,6 @@ PolicyNum	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>  	  PolicyNum;	
 PolicyNum	navi_manager/include/MDPmanager.h	/^ 	vector<int>  	  PolicyNum;	\/\/ Policy (PiNum)$/;"	m	class:MDPManager
 Pre_dynamicSplinePath	navi_manager/include/Dynamic_Manager.h	/^	nav_msgs::Path Pre_dynamicSplinePath;$/;"	m	class:Dynamic_Manager
 Pre_dynamicSplinePath	navi_manager/include/MDPmanager.h	/^	nav_msgs::Path 		Pre_dynamicSplinePath;$/;"	m	class:MDPManager
-Pre_dynamicSplinePath	navi_manager/include/dynamic_window.h	/^	nav_msgs::Path Pre_dynamicSplinePath;$/;"	m	class:Dynamic_window
 Prob_bad	navi_manager/include/Dynamic_Manager.h	/^	double Prob_bad;$/;"	m	class:Dynamic_Manager
 Prob_bad	navi_manager/include/MDPmanager.h	/^	double Prob_bad;$/;"	m	class:MDPManager
 Prob_good	navi_manager/include/Dynamic_Manager.h	/^	double Prob_good;$/;"	m	class:Dynamic_Manager
@@ -258,7 +251,6 @@ Ra	navi_manager/include/MDPmanager.h	/^ 	double Ra;$/;"	m	class:MDPManager
 ReceiveData	navi_manager/include/Dynamic_Manager.h	/^ 	int ReceiveData;$/;"	m	class:Dynamic_Manager
 ReceiveData	navi_manager/include/MDPmanager.h	/^ 	int ReceiveData;$/;"	m	class:MDPManager
 Receive_count	navi_manager/src/dynamic_planner.cpp	/^static int  Receive_count=0;$/;"	v	file:
-Receive_count	navi_manager/src/window_test.cpp	/^static int  Receive_count=0;$/;"	v	file:
 Recived_path	navi_manager/include/PathManager.h	/^	std::vector< std::vector<double> > Recived_path;$/;"	m	class:PathManager
 Rewards	navi_manager/include/Dynamic_Manager.h	/^ 	vector<double>    Rewards; 		\/\/ R$/;"	m	class:Dynamic_Manager
 Rewards	navi_manager/include/MDPmanager.h	/^ 	vector<double>    Rewards; 		\/\/ R$/;"	m	class:MDPManager
@@ -350,13 +342,10 @@ SplinePath_pub2	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher 	 Splin
 SplinePath_pub2	navi_manager/include/MDPmanager.h	/^	ros::Publisher 	 SplinePath_pub2;$/;"	m	class:MDPManager
 St_OBS_CELL	navi_manager/include/Dynamic_Manager.h	38;"	d
 St_OBS_CELL	navi_manager/include/MDPmanager.h	36;"	d
-St_OBS_CELL	navi_manager/include/dynamic_window.h	37;"	d
 Start_X	navi_manager/include/Dynamic_Manager.h	42;"	d
 Start_X	navi_manager/include/MDPmanager.h	42;"	d
-Start_X	navi_manager/include/dynamic_window.h	41;"	d
 Start_Y	navi_manager/include/Dynamic_Manager.h	43;"	d
 Start_Y	navi_manager/include/MDPmanager.h	43;"	d
-Start_Y	navi_manager/include/dynamic_window.h	42;"	d
 State_Distance	navi_manager/include/MapParam.h	/^	std::vector<float>  State_Distance;$/;"	m	class:MapParam
 State_Type	navi_manager/include/MapParam.h	/^	std::vector<int>    State_Type;$/;"	m	class:MapParam
 State_dim	navi_manager/include/Dynamic_Manager.h	/^ 	int               State_dim;$/;"	m	class:Dynamic_Manager
@@ -376,7 +365,7 @@ X_mapSize	navi_manager/include/MDPmanager.h	/^ 	int               X_mapSize;$/;"
 X_mapSize	navi_manager/include/dynamic_window.h	/^ 	int               X_mapSize;$/;"	m	class:Dynamic_window
 YOLO_range_person	navi_manager/include/Dynamic_Manager.h	57;"	d
 YOLO_range_person	navi_manager/include/MDPmanager.h	56;"	d
-YOLO_range_person	navi_manager/include/dynamic_window.h	51;"	d
+YOLO_range_person	navi_manager/include/dynamic_window.h	41;"	d
 Y_mapSize	navi_manager/include/Dynamic_Manager.h	/^ 	int               Y_mapSize;$/;"	m	class:Dynamic_Manager
 Y_mapSize	navi_manager/include/MDPmanager.h	/^ 	int               Y_mapSize;$/;"	m	class:MDPManager
 Y_mapSize	navi_manager/include/dynamic_window.h	/^ 	int               Y_mapSize;$/;"	m	class:Dynamic_window
@@ -452,7 +441,6 @@ dynamic_mapCallback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::dynamic_m
 dynamic_mapCallback	navi_manager/src/dynamic_window.cpp	/^void Dynamic_window::dynamic_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:Dynamic_window
 filtered_humans_array	navi_manager/include/Dynamic_Manager.h	/^  	visualization_msgs::MarkerArray filtered_humans_array;$/;"	m	class:Dynamic_Manager
 filtered_target	navi_manager/include/Dynamic_Manager.h	/^ 	vector<double>    filtered_target;$/;"	m	class:Dynamic_Manager
-filtered_target	navi_manager/include/dynamic_window.h	/^ 	vector<double>    filtered_target;$/;"	m	class:Dynamic_window
 filterhumanbelief	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::filterhumanbelief()$/;"	f	class:Dynamic_Manager
 finalTarget	navi_manager/include/PathManager.h	/^	std::vector<double> finalTarget;$/;"	m	class:PathManager
 findSpan	navi_manager/src/srBSpline.cpp	/^bool srBSpline::findSpan( int& ret, double u )$/;"	f	class:srBSpline
@@ -540,10 +528,10 @@ m_ControlPoints	navi_manager/include/srBSpline.h	/^	double* m_ControlPoints;	\/\
 m_ControlPointsarray	navi_manager/include/srBSpline.h	/^	double** m_ControlPointsarray;	\/\/ control points for V $/;"	m	class:srBSpline
 m_CubicSpline_x	navi_manager/include/Dynamic_Manager.h	/^ 	srBSpline*          m_CubicSpline_x;$/;"	m	class:Dynamic_Manager
 m_CubicSpline_x	navi_manager/include/MDPmanager.h	/^ 	srBSpline*           m_CubicSpline_x;$/;"	m	class:MDPManager
-m_CubicSpline_x	navi_manager/include/dynamic_window.h	/^ 	srBSpline*          m_CubicSpline_x;$/;"	m	class:Dynamic_window
+m_CubicSpline_x	navi_manager/include/dynamic_window.h	/^ 	srBSpline*       m_CubicSpline_x;$/;"	m	class:Dynamic_window
 m_CubicSpline_y	navi_manager/include/Dynamic_Manager.h	/^ 	srBSpline*          m_CubicSpline_y;$/;"	m	class:Dynamic_Manager
 m_CubicSpline_y	navi_manager/include/MDPmanager.h	/^ 	srBSpline*           m_CubicSpline_y;$/;"	m	class:MDPManager
-m_CubicSpline_y	navi_manager/include/dynamic_window.h	/^ 	srBSpline*          m_CubicSpline_y;$/;"	m	class:Dynamic_window
+m_CubicSpline_y	navi_manager/include/dynamic_window.h	/^ 	srBSpline*       m_CubicSpline_y;$/;"	m	class:Dynamic_window
 m_Degree	navi_manager/include/srBSpline.h	/^	int m_Degree;				\/\/ degree of the curve$/;"	m	class:srBSpline
 m_Goal	navi_manager/include/Dynamic_Manager.h	/^  	vector<int>       m_Goal;							\/\/Goal position of (x,y)$/;"	m	class:Dynamic_Manager
 m_Goal	navi_manager/include/MDPmanager.h	/^  	vector<int>       m_Goal;							\/\/Goal position of (x,y)$/;"	m	class:MDPManager
@@ -557,7 +545,7 @@ m_Robot	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>       m_Robot;			
 m_Robot	navi_manager/include/MDPmanager.h	/^ 	vector<int>       m_Robot;					    	\/\/Current Robot position of (x,y)$/;"	m	class:MDPManager
 m_Spline	navi_manager/include/Dynamic_Manager.h	/^ 	srBSpline*          m_Spline;$/;"	m	class:Dynamic_Manager
 m_Spline	navi_manager/include/MDPmanager.h	/^ 	srBSpline*           m_Spline;$/;"	m	class:MDPManager
-m_Spline	navi_manager/include/dynamic_window.h	/^ 	srBSpline*          m_Spline;$/;"	m	class:Dynamic_window
+m_Spline	navi_manager/include/dynamic_window.h	/^ 	srBSpline*       m_Spline;$/;"	m	class:Dynamic_window
 m_Start	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>		  m_Start;							\/\/Start position of(x,y)$/;"	m	class:Dynamic_Manager
 m_Start	navi_manager/include/MDPmanager.h	/^ 	vector<int>		  m_Start;							\/\/Start position of(x,y)$/;"	m	class:MDPManager
 m_boolPath	navi_manager/include/MDPmanager.h	/^ 	bool    m_boolPath;$/;"	m	class:MDPManager
@@ -576,7 +564,6 @@ m_human_obs	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>		  m_human_ob
 m_human_obs	navi_manager/include/MDPmanager.h	/^ 	vector<int>		  m_human_obs;$/;"	m	class:MDPManager
 m_localoccupancy	navi_manager/include/Dynamic_Manager.h	/^ 	vector<int>       m_localoccupancy;$/;"	m	class:Dynamic_Manager
 m_localoccupancy	navi_manager/include/MDPmanager.h	/^ 	vector<int>       m_localoccupancy;$/;"	m	class:MDPManager
-m_localoccupancy	navi_manager/include/dynamic_window.h	/^ 	vector<int>       m_localoccupancy;$/;"	m	class:Dynamic_window
 m_node	navi_manager/include/Dynamic_Manager.h	/^	ros::NodeHandle  m_node;$/;"	m	class:Dynamic_Manager
 m_node	navi_manager/include/MDPmanager.h	/^	ros::NodeHandle  m_node;$/;"	m	class:MDPManager
 m_node	navi_manager/include/PathManager.h	/^ 	ros::NodeHandle m_node;$/;"	m	class:PathManager
@@ -651,7 +638,6 @@ put_human_occ_map_yolo	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manag
 put_human_surrounding_beliefmap	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::put_human_surrounding_beliefmap(int idx, double value)$/;"	f	class:Dynamic_Manager
 ra	navi_manager/include/Dynamic_Manager.h	60;"	d
 ra	navi_manager/include/MDPmanager.h	59;"	d
-ra	navi_manager/include/dynamic_window.h	53;"	d
 real_s	navi_manager/include/types.h	/^	typedef double			real_s;$/;"	t
 real_s	navi_manager/include/types.h	/^	typedef float			real_s;$/;"	t
 scaling	navi_manager/include/Dynamic_Manager.h	/^	int  scaling=12;$/;"	m	class:Dynamic_Manager
