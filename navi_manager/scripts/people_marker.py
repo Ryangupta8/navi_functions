@@ -20,8 +20,8 @@ array_publisher = rospy.Publisher(topic_array, PoseArray,queue_size=10)
 
 rospy.init_node('register')
 
-markerArray = MarkerArray()
-posesrArray = PoseArray()
+# markerArray = MarkerArray()
+posesArray = PoseArray()
 
 count = 0
 MARKERS_MAX = 100
@@ -29,12 +29,12 @@ MARKERS_MAX = 100
 while not rospy.is_shutdown():
 
    # del markerArray.markers[:]
-   del posesrArray.poses[:]
+   del posesArray.poses[:]
 
    pose_position = Point()
    pose_orientation = Quaternion()
 
-   pose_position.x=1.0
+   pose_position.x=-1.0
    pose_position.y=1.0
    pose_position.z=0.5
 
@@ -46,24 +46,28 @@ while not rospy.is_shutdown():
 
    Human_pose.position=pose_position
    Human_pose.orientation=pose_orientation
-   posesrArray.poses.append(Human_pose)
+   posesArray.poses.append(Human_pose)
 
-   pose_position.x=5.0
-   pose_position.y=3.0
-   pose_position.z=0.5
+   pose2_position = Point()
+   pose2_orientation = Quaternion()
+   pose2_position.x=5.0
+   pose2_position.y=3.0
+   pose2_position.z=0.5
 
-   pose_orientation.x=0
-   pose_orientation.y=0
-   pose_orientation.z=0
-   pose_orientation.w=1.0
+   pose2_orientation.x=0
+   pose2_orientation.y=0
+   pose2_orientation.z=0
+   pose2_orientation.w=1.0
    Human_pose2 = Pose()
 
-   Human_pose2.position=pose_position
-   Human_pose2.orientation=pose_orientation
-   posesrArray.poses.append(Human_pose2)
+   Human_pose2.position=pose2_position
+   Human_pose2.orientation=pose2_orientation
+   posesArray.poses.append(Human_pose2)
 
 
-   array_publisher.Publish(pose)
+   posesArray.header.frame_id = "map"
+   posesArray.header.stamp =rospy.Time.now()
+   array_publisher.publish(posesArray)
    #moving human
    #marker.pose.position.x = 2.2+0.0015*count
    #marker.pose.position.y = -0.3+0.2*math.sin(count/100.0)

@@ -589,7 +589,6 @@ marker	navi_manager/scripts/human_marker.py	/^   marker = Marker()$/;"	v
 marker2	navi_manager/scripts/human_marker.py	/^   marker2 = Marker()$/;"	v
 marker3	navi_manager/scripts/human_marker.py	/^   marker3 = Marker()$/;"	v
 markerArray	navi_manager/scripts/human_marker.py	/^markerArray = MarkerArray()$/;"	v
-markerArray	navi_manager/scripts/people_marker.py	/^markerArray = MarkerArray()$/;"	v
 max_off_yolo_laser	navi_manager/include/Dynamic_Manager.h	56;"	d
 maxiter	navi_manager/include/Dynamic_Manager.h	/^ 	int maxiter;$/;"	m	class:Dynamic_Manager
 maxiter	navi_manager/include/MDPmanager.h	/^ 	int maxiter;$/;"	m	class:MDPManager
@@ -624,9 +623,11 @@ path_indx	navi_manager/src/base_actionlib.cpp	/^static int path_indx=0;$/;"	v	fi
 path_indx	navi_manager/src/base_conti_actionlib.cpp	/^static int path_indx=0;$/;"	v	file:
 people_measurement_pub_	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   people_measurement_pub_;$/;"	m	class:Dynamic_Manager
 pomdp_cmd_callback	navi_manager/src/PathManager.cpp	/^void PathManager::pomdp_cmd_callback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:PathManager
+pose2_orientation	navi_manager/scripts/people_marker.py	/^   pose2_orientation = Quaternion()$/;"	v
+pose2_position	navi_manager/scripts/people_marker.py	/^   pose2_position = Point()$/;"	v
 pose_orientation	navi_manager/scripts/people_marker.py	/^   pose_orientation = Quaternion()$/;"	v
 pose_position	navi_manager/scripts/people_marker.py	/^   pose_position = Point()$/;"	v
-posesrArray	navi_manager/scripts/people_marker.py	/^posesrArray = PoseArray()$/;"	v
+posesArray	navi_manager/scripts/people_marker.py	/^posesArray = PoseArray()$/;"	v
 pre_idx	navi_manager/include/PathManager.h	/^	int pre_idx;$/;"	m	class:PathManager
 printPath	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::printPath()$/;"	f	class:Dynamic_Manager
 printPath	navi_manager/src/MDPmanager.cpp	/^void MDPManager::printPath()$/;"	f	class:MDPManager
