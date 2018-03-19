@@ -582,6 +582,7 @@ main	navi_manager/src/follow_test.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_manager/src/global_planner.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_manager/src/window_test.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_service/src/clicked_navi_test.cpp	/^int main(int argc, char **argv)$/;"	f
+main	navi_service/src/service_client.cpp	/^int main(int argc, char **argv)$/;"	f
 main	navi_service/src/service_test.cpp	/^int main(int argc, char **argv)$/;"	f
 map_step	navi_manager/include/MapParam.h	/^    double   		  	map_step;$/;"	m	class:MapParam
 marker	navi_manager/scripts/human_marker.py	/^   marker = Marker()$/;"	v
