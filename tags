@@ -145,6 +145,8 @@ Human_MarkerCallback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::Human_Ma
 Human_MarkerCallback	navi_manager/src/dynamic_window.cpp	/^void Dynamic_window::Human_MarkerCallback(const visualization_msgs::Marker::ConstPtr& msg)$/;"	f	class:Dynamic_window
 Human_Yolo_Callback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::Human_Yolo_Callback(const visualization_msgs::MarkerArray::ConstPtr& msg)$/;"	f	class:MDPManager
 Human_boxes_pub	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   Human_boxes_pub;$/;"	m	class:Dynamic_Manager
+Human_pose	navi_manager/scripts/people_marker.py	/^   Human_pose = Pose()$/;"	v
+Human_pose2	navi_manager/scripts/people_marker.py	/^   Human_pose2 = Pose()$/;"	v
 Human_target_cmdCallback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::Human_target_cmdCallback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:MDPManager
 IN	navi_manager/include/srBSpline.h	10;"	d
 Init	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::Init()$/;"	f	class:Dynamic_Manager
@@ -170,6 +172,7 @@ Local_Y_start	navi_manager/include/dynamic_window.h	/^ 	int Local_Y_start;$/;"	m
 Local_mapCallback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::Local_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)$/;"	f	class:MDPManager
 Localmap_sub	navi_manager/include/MDPmanager.h	/^	ros::Subscriber  Localmap_sub;$/;"	m	class:MDPManager
 MARKERS_MAX	navi_manager/scripts/human_marker.py	/^MARKERS_MAX = 100$/;"	v
+MARKERS_MAX	navi_manager/scripts/people_marker.py	/^MARKERS_MAX = 100$/;"	v
 MATH_PI	navi_manager/include/Dynamic_Manager.h	62;"	d
 MATH_PI	navi_manager/include/dynamic_window.h	44;"	d
 MDPManager	navi_manager/include/MDPmanager.h	/^ 	MDPManager():maxiter(Maxiteration),Action_dim(8),gamma(1),Ra(ra),publishnum(0),m_boolPath(false),m_boolSolve(false){}$/;"	f	class:MDPManager
@@ -385,6 +388,7 @@ ___SRLIB_BSPLINE___	navi_manager/include/srBSpline.h	5;"	d
 __init__	navi_manager/scripts/base_move.py	/^    def __init__(self, wait=0.0):$/;"	m	class:BaseMoveCBA
 __init__	navi_manager/scripts/gui_move.py	/^  def __init__(self):$/;"	m	class:SpeechGui
 array_publisher	navi_manager/scripts/human_marker.py	/^array_publisher = rospy.Publisher(topic_array, MarkerArray,queue_size=10)$/;"	v
+array_publisher	navi_manager/scripts/people_marker.py	/^array_publisher = rospy.Publisher(topic_array, PoseArray,queue_size=10)$/;"	v
 base_pose_callback	navi_manager/src/MDPmanager.cpp	/^void MDPManager::base_pose_callback(const nav_msgs::Odometry::ConstPtr& msg)$/;"	f	class:MDPManager
 base_trajectory	navi_manager/include/PathManager.h	/^ 	std::vector< std::vector<double> > base_trajectory;$/;"	m	class:PathManager
 belief_pub	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   belief_pub;$/;"	m	class:Dynamic_Manager
@@ -411,6 +415,7 @@ click_navi_manager	navi_service/src/clicked_navi_test.cpp	/^  explicit click_nav
 click_navi_manager	navi_service/src/clicked_navi_test.cpp	/^class click_navi_manager{$/;"	c	file:
 connectCubicSpline	navi_manager/src/srBSpline.cpp	/^void srBSpline::connectCubicSpline( srBSpline* prev_spline,srBSpline* post_spline )$/;"	f	class:srBSpline
 count	navi_manager/scripts/human_marker.py	/^count = 0$/;"	v
+count	navi_manager/scripts/people_marker.py	/^count = 0$/;"	v
 cur_coord	navi_manager/include/Dynamic_Manager.h	/^	std::vector<int> cur_coord;$/;"	m	class:Dynamic_Manager
 cur_coord	navi_manager/include/MDPmanager.h	/^	std::vector<int> cur_coord;$/;"	m	class:MDPManager
 cur_idx	navi_manager/include/PathManager.h	/^	int cur_idx;$/;"	m	class:PathManager
@@ -583,6 +588,7 @@ marker	navi_manager/scripts/human_marker.py	/^   marker = Marker()$/;"	v
 marker2	navi_manager/scripts/human_marker.py	/^   marker2 = Marker()$/;"	v
 marker3	navi_manager/scripts/human_marker.py	/^   marker3 = Marker()$/;"	v
 markerArray	navi_manager/scripts/human_marker.py	/^markerArray = MarkerArray()$/;"	v
+markerArray	navi_manager/scripts/people_marker.py	/^markerArray = MarkerArray()$/;"	v
 max_off_yolo_laser	navi_manager/include/Dynamic_Manager.h	56;"	d
 maxiter	navi_manager/include/Dynamic_Manager.h	/^ 	int maxiter;$/;"	m	class:Dynamic_Manager
 maxiter	navi_manager/include/MDPmanager.h	/^ 	int maxiter;$/;"	m	class:MDPManager
@@ -617,6 +623,9 @@ path_indx	navi_manager/src/base_actionlib.cpp	/^static int path_indx=0;$/;"	v	fi
 path_indx	navi_manager/src/base_conti_actionlib.cpp	/^static int path_indx=0;$/;"	v	file:
 people_measurement_pub_	navi_manager/include/Dynamic_Manager.h	/^	ros::Publisher   people_measurement_pub_;$/;"	m	class:Dynamic_Manager
 pomdp_cmd_callback	navi_manager/src/PathManager.cpp	/^void PathManager::pomdp_cmd_callback(const std_msgs::Int8::ConstPtr& msg)$/;"	f	class:PathManager
+pose_orientation	navi_manager/scripts/people_marker.py	/^   pose_orientation = Quaternion()$/;"	v
+pose_position	navi_manager/scripts/people_marker.py	/^   pose_position = Point()$/;"	v
+posesrArray	navi_manager/scripts/people_marker.py	/^posesrArray = PoseArray()$/;"	v
 pre_idx	navi_manager/include/PathManager.h	/^	int pre_idx;$/;"	m	class:PathManager
 printPath	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::printPath()$/;"	f	class:Dynamic_Manager
 printPath	navi_manager/src/MDPmanager.cpp	/^void MDPManager::printPath()$/;"	f	class:MDPManager
@@ -698,6 +707,7 @@ t_	navi_manager/src/base_conti_actionlib.cpp	/^std::vector<double> t_;$/;"	v
 tf_buffer_	navi_manager/include/PathManager.h	/^ 	tf2_ros::Buffer tf_buffer_;$/;"	m	class:PathManager
 topic	navi_manager/scripts/human_marker.py	/^topic = 'human_target'$/;"	v
 topic_array	navi_manager/scripts/human_marker.py	/^topic_array = 'human_boxes'$/;"	v
+topic_array	navi_manager/scripts/people_marker.py	/^topic_array = 'human_poses_boxes'$/;"	v
 trigger	navi_manager/scripts/wrist	/^def trigger(req):$/;"	f
 updateMap	navi_manager/src/Dynamic_Manager.cpp	/^void Dynamic_Manager::updateMap(vector<int>& localmap_, vector<int>& local_start, vector<int>& local_goal)$/;"	f	class:Dynamic_Manager
 updateMap	navi_manager/src/MDPmanager.cpp	/^void MDPManager::updateMap(vector<int>& localmap_, vector<int>& local_start, vector<int>& local_goal)$/;"	f	class:MDPManager

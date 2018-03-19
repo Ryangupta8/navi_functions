@@ -45,6 +45,11 @@ while not rospy.is_shutdown():
    marker.pose.position.y = 0.3
    marker.pose.position.z = 1
 
+   marker.pose.orientation.x = 0.0
+   marker.pose.orientation.y = 0.0
+   marker.pose.orientation.z = 0.0
+   marker.pose.orientation.w = 1.0
+
    marker2 = Marker()
    marker2.header.frame_id = "/map"
    marker2.type = marker.SPHERE
@@ -56,12 +61,15 @@ while not rospy.is_shutdown():
    marker2.color.r = 0.0
    marker2.color.g = 1.0
    marker2.color.b = 0.0
-   marker2.pose.orientation.w = 1.0
    
+   marker2.pose.orientation.x = 0.0
+   marker2.pose.orientation.y = 0.0
+   marker2.pose.orientation.z = 0.0
+   marker2.pose.orientation.w = 1.0
+
    marker2.pose.position.x = 1.5
    marker2.pose.position.y = -0.45
    marker2.pose.position.z = 1
-
 
    marker3 = Marker()
    marker3.header.frame_id = "/map"
@@ -79,14 +87,19 @@ while not rospy.is_shutdown():
    marker3.pose.position.x = 0.8
    marker3.pose.position.y = 0.4
    marker3.pose.position.z = 1
+
+   marker3.pose.orientation.x = 0.0
+   marker3.pose.orientation.y = 0.0
+   marker3.pose.orientation.z = 0.0
+   marker3.pose.orientation.w = 1.0
         
    #moving human
-   #marker.pose.position.x = 2.2+0.0015*count
-   #marker.pose.position.y = -0.3+0.2*math.sin(count/100.0)
-   #marker.pose.position.z = 1
+   marker.pose.position.x = 2.2+0.0015*count
+   marker.pose.position.y = -0.3+0.2*math.sin(count/100.0)
+   marker.pose.position.z = 1
 
-   # marker.pose.position.y = 2.7+0.2*math.sin(count/100.0)
-   # marker.pose.position.y = +0.2*math.sin(count / 40.0) 
+   marker2.pose.position.x = 2.7+0.2*math.sin(count/100.0)
+   marker2.pose.position.y = +0.2*math.sin(count / 40.0) 
    
    # marker.pose.position.x = 3.0
    # marker.pose.position.y = 0.5
