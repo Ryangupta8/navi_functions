@@ -67,6 +67,11 @@ add_executable(nav_service_test src/service_test.cpp ${SOURCES})
 target_link_libraries(nav_service_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 add_dependencies(nav_service_test ${catkin_EXPORTED_TARGETS})
 
+add_executable(obstacle_checker src/obstacle_checker.cpp ${SOURCES})
+target_link_libraries(obstacle_checker ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(obstacle_checker ${catkin_EXPORTED_TARGETS})
+
+
 
 add_executable(clicked_navi_test src/clicked_navi_test.cpp ${SOURCES})
 target_link_libraries(clicked_navi_test ${catkin_LIBRARIES})
