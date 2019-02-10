@@ -71,6 +71,9 @@ add_executable(obstacle_checker src/obstacle_checker.cpp ${SOURCES})
 target_link_libraries(obstacle_checker ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 add_dependencies(obstacle_checker ${catkin_EXPORTED_TARGETS})
 
+add_executable(map_checker src/map_checker.cpp ${SOURCES})
+target_link_libraries(map_checker ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(map_checker ${catkin_EXPORTED_TARGETS})
 
 
 add_executable(clicked_navi_test src/clicked_navi_test.cpp ${SOURCES})
