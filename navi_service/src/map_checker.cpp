@@ -52,12 +52,21 @@ public:
     geometry_msgs::PointStamped input_point;
     input_point.header.frame_id="base_link";
     input_point.point.x=0.01;
-    input_point.point.y=0.6;
+    input_point.point.y=0.5;
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
+    input_point.point.x=0.00;
+    input_point.point.y=1.0;
+    input_point.point.z=0.0;
+    PointSet.push_back(input_point);
+
     input_point.header.frame_id="base_link";
     input_point.point.x=0.01;
-    input_point.point.y=-0.6;
+    input_point.point.y=-0.5;
+    input_point.point.z=0.0;
+    PointSet.push_back(input_point);
+    input_point.point.x=0.01;
+    input_point.point.y=-1.0;
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
 
@@ -107,11 +116,19 @@ public:
             isObstacle[point_idx]=check_obstacle(point_out.point.x, point_out.point.y);
       }
 
+      bool result_obs=false;
+      if(isObstacle[0] || isObstacle[1])
+          result_obs=true;
+
       std_msgs::Bool IsObs_msg;
-      IsObs_msg.data=isObstacle[0];
+      IsObs_msg.data=result_obs;
       occ1_pub.publish(IsObs_msg);
 
-      IsObs_msg.data=isObstacle[1];
+      result_obs=false;
+      if(isObstacle[2] || isObstacle[3])
+          result_obs=true;
+
+      IsObs_msg.data=result_obs;
       occ2_pub.publish(IsObs_msg);
 
   }
