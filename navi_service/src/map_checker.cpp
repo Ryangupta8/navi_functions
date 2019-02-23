@@ -52,23 +52,23 @@ public:
     geometry_msgs::PointStamped input_point;
     input_point.header.frame_id="base_link";
     input_point.point.x=0.01;
-    input_point.point.y=0.5;
+    input_point.point.y=0.75;
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
     input_point.point.x=0.00;
-    input_point.point.y=1.0;
+    input_point.point.y=-0.75;
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
 
-    input_point.header.frame_id="base_link";
-    input_point.point.x=0.01;
-    input_point.point.y=-0.5;
-    input_point.point.z=0.0;
-    PointSet.push_back(input_point);
-    input_point.point.x=0.01;
-    input_point.point.y=-1.0;
-    input_point.point.z=0.0;
-    PointSet.push_back(input_point);
+    //input_point.header.frame_id="base_link";
+    //input_point.point.x=0.01;
+    //input_point.point.y=-0.5;
+    //input_point.point.z=0.0;
+    //PointSet.push_back(input_point);
+    //input_point.point.x=0.01;
+    //input_point.point.y=-1.0;
+    //input_point.point.z=0.0;
+    //PointSet.push_back(input_point);
 
     //input_point.header.frame_id="base_link";
     //input_point.point.x=0.3;
@@ -98,7 +98,7 @@ public:
       global_pose[1]=msg->pose.position.y;
 
       tf::StampedTransform baselinktransform;
-      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(2.0));
+      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(1.0));
       listener.lookupTransform("map", "base_link", ros::Time(0), baselinktransform);
       double yaw_tf =   tf::getYaw(baselinktransform.getRotation()); 
 
@@ -108,7 +108,7 @@ public:
           return;
      //check obstacles at two sides of the robot, pointset has two points defined w.r.t the base link frame
       std::vector<bool> isObstacle(2,false);
-      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(2.0));
+      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(1.0));
       for(size_t point_idx(0);point_idx<PointSet.size();point_idx++)
       {
             geometry_msgs::PointStamped point_out;
@@ -117,19 +117,26 @@ public:
       }
 
       bool result_obs=false;
-      if(isObstacle[0] || isObstacle[1])
+      //if(isObstacle[0] || isObstacle[1])
+      if(isObstacle[0])
           result_obs=true;
+      else
+          result_obs=false;
 
       std_msgs::Bool IsObs_msg;
       IsObs_msg.data=result_obs;
       occ1_pub.publish(IsObs_msg);
 
       result_obs=false;
-      if(isObstacle[2] || isObstacle[3])
+      //if(isObstacle[2] || isObstacle[3])
+      if(isObstacle[1])
           result_obs=true;
+      else
+          result_obs=false;
 
-      IsObs_msg.data=result_obs;
-      occ2_pub.publish(IsObs_msg);
+      std_msgs::Bool IsObs_msg2;
+      IsObs_msg2.data=result_obs;
+      occ2_pub.publish(IsObs_msg2);
 
   }
 
