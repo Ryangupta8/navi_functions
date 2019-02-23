@@ -51,12 +51,14 @@ public:
 
     geometry_msgs::PointStamped input_point;
     input_point.header.frame_id="base_link";
+    //input_point.header.stamp=ros::Time::now();
     input_point.point.x=0.01;
-    input_point.point.y=0.75;
+    input_point.point.y=0.8;
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
+    //input_point.header.stamp=ros::Time::now();
     input_point.point.x=0.00;
-    input_point.point.y=-0.75;
+    input_point.point.y=-0.8;
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
 
@@ -97,10 +99,15 @@ public:
       global_pose[0]=msg->pose.position.x;
       global_pose[1]=msg->pose.position.y;
 
+
+      //for(size_t point_idx(0);point_idx<PointSet.size();point_idx++)
+        //PointSet[point_idx].header.stamp=ros::Time::now();
+
       tf::StampedTransform baselinktransform;
       listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(1.0));
       listener.lookupTransform("map", "base_link", ros::Time(0), baselinktransform);
       double yaw_tf =   tf::getYaw(baselinktransform.getRotation()); 
+
 
       global_pose[2]=yaw_tf;
 
@@ -108,10 +115,12 @@ public:
           return;
      //check obstacles at two sides of the robot, pointset has two points defined w.r.t the base link frame
       std::vector<bool> isObstacle(2,false);
-      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(1.0));
+      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(3.0));
       for(size_t point_idx(0);point_idx<PointSet.size();point_idx++)
       {
             geometry_msgs::PointStamped point_out;
+            //PointSet[point_idx].header.stamp=ros::Time::now();
+            //listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(1.0));
             listener.transformPoint("map", PointSet[point_idx], point_out);
             isObstacle[point_idx]=check_obstacle(point_out.point.x, point_out.point.y);
       }
