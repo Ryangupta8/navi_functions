@@ -2,18 +2,23 @@
 
 import rospy
 import actionlib
+import numpy as np
 
 from std_msgs.msg import *
 from geometry_msgs.msg import *
-from geometry_msgs.msg import Pose, PoseStamped, PoseArray, Point, Quaternion, PointStamped
+from geometry_msgs.msg import Pose, PoseStamped, PoseArray, Point, Quaternion, PointStamped, Twist
 from hsrb_interface import Robot, exceptions, geometry
 from navi_service.msg import *
+from navi_service.msg import ApproachAction, ApproachFeedback, ApproachResult
 from sensor_msgs.msg import JointState
 import tf
 from tf import TransformListener
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
-
+from navi_service.msg import *
 import math
+
+_ORIGIN_TF ='map'
+_BASE_TF = 'base_link'
 
 
 class ApproachServer(object):
@@ -23,21 +28,30 @@ class ApproachServer(object):
         self._action_name = name
         self.robot = robot
         self.robot_pose=np.zeros((3,1))
-        self.target_pose = Pose()
+        #x,y,theta
+        self.vel_cmd = Twist()
+        self.target_point = PointStamped()
+        self.target_pose = Point()
         self.IsActive = True
         self.IsGoal= False
-
+        self.IsRotated=False
+        self.feedback_ = ApproachFeedback()
+        self.result_= ApproachResult()
+        self.target_yaw=0.0
+        self.direction_z=1
         # Preparation to use robot functions
-        while not rospy.is_shutdown():
-            try:
-                self.body = self.robot.try_get('whole_body')
-                self.gripper = self.robot.try_get('gripper')
-                self.omni_base = self.robot.try_get('omni_base')
-                break
-            except(exceptions.ResourceNotFoundError, exceptions.RobotConnectionError) as e:
-                rospy.logerr("Failed to obtain resource: {}\nRetrying...".format(e))
+        # while not rospy.is_shutdown():
+            # try:
+                # self.body = self.robot.try_get('whole_body')
+                # self.gripper = self.robot.try_get('gripper')
+                # self.omni_base = self.robot.try_get('omni_base')
+                # break
+            # except(exceptions.ResourceNotFoundError, exceptions.RobotConnectionError) as e:
+                # rospy.logerr("Failed to obtain resource: {}\nRetrying...".format(e))
 
-        self.vel_pub = rospy.Publisher("objet_tracker/particle_filter",Image,queue_size=10)
+        self.listener = tf.TransformListener()
+	self.listener.waitForTransform(_ORIGIN_TF,_BASE_TF, rospy.Time(), rospy.Duration(5.0))
+        self.vel_pub = rospy.Publisher('/hsrb/command_velocity', geometry_msgs.msg.Twist,queue_size=10)
 
         robot_pose_topic='global_pose'
         rospy.Subscriber(robot_pose_topic, PoseStamped, self.robot_pose_Cb)
@@ -45,14 +59,143 @@ class ApproachServer(object):
         self._as = actionlib.SimpleActionServer(self._action_name, navi_service.msg.ApproachAction, execute_cb=self.execute_cb, auto_start = False)
         self._as.start()
 
+        self.obs_cli = actionlib.SimpleActionClient('obscheck_action', navi_service.msg.ObsCheckerAction)
+        self.obs_cli.wait_for_server()
+
+    def process_target(self,target_point ):
+
+        # target_point is represented w.r.t base_link
+        goal_x = target_point.point.x
+        goal_y = target_point.point.y
+        goal_theta = target_point.point.z
+
+        diff_x=goal_x;
+        diff_y=goal_y;
+        distance =0.0
+        distance +=math.pow(diff_x,2)
+        distance +=math.pow(diff_y,2)
+        distance  =math.sqrt(distance)
+
+        if (distance>2.5):
+            split_size=4.0
+        elif (distance<0.75):
+            split_size=0.0
+        else:
+            split_size=3.0
+
+        # coeff=(float)(1.0/split_size)
+        
+        if goal_theta>math.pi:
+            goal_theta=goal_theta+2*math.pi
+        elif goal_theta<(-1*math.pi):
+            goal_theta=goal_theta+2*math.pi
+
+        if goal_theta>0:
+            self.direction_z=1
+        else:
+            self.direction_z=-1
+
+
+    def update_angular_command(self, des_vel):
+        self.vel_cmd.angular.z=des_vel*0.35
+        # self.vel_pub.publish(vel_cmd)
+
+    def update_linear_command(self):
+
+        self.vel_cmd.linear.x=0.2*self.x_err
+        self.vel_cmd.linear.y=0.2*self.y_err
+        # self.vel_pub.publish(vel_cmd)
+
+    def control_base(self):
+
+        # isObstacle=False
+
+        #check obstacle()
+        if self.IsGoal==False:
+            if self.is_Obstacle==False:
+                if self.check_ori_error(self.robot_pose[2],self.target_yaw,0.05):
+                    self.update_angular_command(0.0)
+                    self.IsRotated=True
+                    # return
+                else:
+                    self.update_angular_command(self.direction_z*0.25)
+                if (self.check_pos_error(self.navtarget_pose,0.05)):
+                    self.feedback_.is_possible_go=True
+                    self.result_.success=True
+                    self._as.set_succeeded(self.result_)
+                    self.IsGoal=True
+                    self.IsActive=False
+                    return
+                    
+                else:
+                    self.update_linear_command()
+
+                self.send_vel_command()
+            else:
+                rospy.loginfo("target is occupied")
+                self.feedback_.is_possible_go=False;
+                self._as.publish_feedback(self.feedback_)
+                    
+            return
+
+
+
+
     def execute_cb(self, goal):
 
-        self.body.move_to_neutral()
-        rospy.sleep(3)
-        self.open_gripper()
-        rospy.loginfo("base pose")
-        self.body.move_to_joint_positions({"arm_lift_joint":0.3, "arm_flex_joint":-0.6,"arm_roll_joint":-1.57,"wrist_roll_joint":-0.7,"wrist_flex_joint":-0.5})
-        rospy.sleep(3)
+        self.IsActive = True
+        self.IsGoal= False
+        self.IsRotated=False
+        self.navtarget_pose = goal.target
+        # target_pose_base=
+        orientation_list=[goal.target.pose.orientation.x, goal.target.pose.orientation.y, goal.target.pose.orientation.z, goal.target.pose.orientation.w]
+        roll,pitch,yaw=euler_from_quaternion(orientation_list)
+        self.target_yaw = yaw
+
+        # transform into baselink frame
+        # gpose.header.frame_id = 'base_link'
+        pose_in = PoseStamped()
+        pose_in.header.stamp = rospy.Time(0)
+        pose_in.header.frame_id= _ORIGIN_TF
+        pose_in.pose = goal.target.pose
+	self.listener.waitForTransform(_ORIGIN_TF,_BASE_TF, rospy.Time(), rospy.Duration(3.0))
+        # target_pose_base= self.listener.transformPose(_BASE_TF, pose_in)
+        try:
+            target_pose_base= self.listener.transformPose(_BASE_TF, pose_in)
+            print "target pose w.r.t base_link", target_pose_base
+            orientation_list=[target_pose_base.pose.orientation.x, target_pose_base.pose.orientation.y, target_pose_base.pose.orientation.z, target_pose_base.pose.orientation.w]
+            roll,pitch,yaw=euler_from_quaternion(orientation_list)
+        except:
+            rospy.loginfo("transform failed")
+            self.result_.success=False
+            self.feedback_.is_possible_go=False
+            self._as.publish_feedback(self.feedback_)
+            self._as.set_succeeded(self.result_)
+            
+            return
+
+        #x, y, theta(yaw)
+        self.target_point.point.x= target_pose_base.pose.position.x
+        self.target_point.point.y= target_pose_base.pose.position.y
+        self.target_point.point.z= yaw
+
+        #check obstacles for target_point
+        obs_goal = navi_service.msg.ObsCheckerGoal()
+        pose = geometry_msgs.msg.PointStamped()
+        pose.header.frame_id='map'
+        pose.header.stamp=rospy.Time.now()
+        pose.point.x= goal.target.pose.position.x
+        pose.point.y= goal.target.pose.position.y
+        obs_goal.pose =pose
+        self.obs_cli.send_goal(obs_goal)
+        self.obs_cli.wait_for_result(rospy.Duration(3.0))
+        obs_result= self.obs_cli.get_result()
+        self.is_Obstacle= obs_result.is_free
+        print self.is_Obstacle
+
+        while not rospy.is_shutdown():
+            self.process_target(self.target_point)
+            self.control_base() 
 
         self._as.set_succeeded()
 
@@ -69,9 +212,41 @@ class ApproachServer(object):
         orientation_list=[robot_orientation.x, robot_orientation.y, robot_orientation.z,robot_orientation.w]
         roll,pitch,yaw=euler_from_quaternion(orientation_list)
         self.robot_pose[2]=yaw
-    def send_vel_cmmand(self):
-        if IsActive:
-            if IsGoal==False:
+
+    def check_ori_error(self,robot_yaw, target_yaw, err_criterion):
+        temp_dist=0.0
+        temp_dist=math.pow((robot_yaw-target_yaw),2)
+        temp_dist=math.sqrt(temp_dist);
+        rospy.loginfo("temp_yaw_diff: %.4lf ", temp_dist)
+        temp_criterion =math.sqrt(math.pow((temp_dist-err_criterion),2))
+        rospy.loginfo("temp_yaw_error: %.4lf ", temp_criterion)
+
+        if (temp_criterion<err_criterion):
+            return True
+
+        return False
+
+    def check_pos_error(self, target_pos, err_criterion):
+        self.x_err = target_pos.pose.position.x- self.robot_pose[0]
+        self.y_err = target_pos.pose.position.y- self.robot_pose[1]
+
+        temp_dist=0.0;
+        temp_dist+=math.pow(self.x_err,2)
+        temp_dist+=math.pow(self.y_err,2)
+        temp_dist=math.sqrt(temp_dist)
+
+        temp_criterion =math.sqrt(math.pow((temp_dist-err_criterion),2))
+
+        # rospy.loginfo("distance error: %.4lf ", temp_criterion);
+        if (temp_criterion<err_criterion):
+            return True
+
+        return False
+
+    def send_vel_command(self):
+        if self.IsActive:
+            if self.IsGoal==False:
+                self.vel_pub.publish(self.vel_cmd)
                 
 
  

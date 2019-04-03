@@ -7,10 +7,13 @@ SET(SOURCES src/navi_service_node.cpp)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  genmsg
   roscpp
+  rospy
   geometry_msgs
   sensor_msgs
   message_generation
+  control_msgs
   std_msgs
   std_srvs
   tf
@@ -39,11 +42,13 @@ add_action_files(
   DIRECTORY action
   FILES
   Approach.action
+  ObsChecker.action
 )
 
 
 generate_messages(
    DEPENDENCIES
+   actionlib_msgs
    std_msgs
    std_srvs
    geometry_msgs
@@ -79,6 +84,11 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_executable(nav_service_test src/service_test.cpp ${SOURCES})
 target_link_libraries(nav_service_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 add_dependencies(nav_service_test ${catkin_EXPORTED_TARGETS})
+
+add_executable(obscheck_server src/obscheck_server.cpp ${SOURCES})
+target_link_libraries(obscheck_server ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(obscheck_server ${catkin_EXPORTED_TARGETS})
+
 
 #add_executable(obstacle_checker src/obstacle_checker.cpp ${SOURCES})
 #target_link_libraries(obstacle_checker ${catkin_LIBRARIES} ${PCL_LIBRARIES})

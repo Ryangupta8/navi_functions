@@ -1,0 +1,7 @@
+#goal definition
+geometry_msgs/PointStamped pose
+---
+#result definition
+bool is_free
+---
+#feedback
