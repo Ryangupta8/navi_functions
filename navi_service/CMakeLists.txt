@@ -43,6 +43,7 @@ add_action_files(
   FILES
   Approach.action
   ObsChecker.action
+  BaseSlide.action
 )
 
 
