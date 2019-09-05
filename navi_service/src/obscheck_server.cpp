@@ -63,21 +63,6 @@ public:
     input_point.point.z=0.0;
     PointSet.push_back(input_point);
 
-    //input_point.header.frame_id="base_link";
-    //input_point.point.x=0.01;
-    //input_point.point.y=-0.5;
-    //input_point.point.z=0.0;
-    //PointSet.push_back(input_point);
-    //input_point.point.x=0.01;
-    //input_point.point.y=-1.0;
-    //input_point.point.z=0.0;
-    //PointSet.push_back(input_point);
-
-    //input_point.header.frame_id="base_link";
-    //input_point.point.x=0.3;
-    //input_point.point.y=-0.1;
-    //input_point.point.z=0.0;
-    //PointSet.push_back(input_point);
 
     first_global_pose.resize(2,0.0);
     global_pose.resize(3,0.0);
@@ -104,8 +89,16 @@ public:
         //PointSet[point_idx].header.stamp=ros::Time::now();
 
       tf::StampedTransform baselinktransform;
-      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(1.0));
+      try{
+      listener.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(5.0));
       listener.lookupTransform("map", "base_link", ros::Time(0), baselinktransform);
+      }
+      catch(...){
+          ROS_WARN("TF exception spot --global_pose");
+          return;
+      
+      }
+
       double yaw_tf =   tf::getYaw(baselinktransform.getRotation()); 
 
 
@@ -172,10 +165,19 @@ public:
      if(goal->pose.header.frame_id!="map")
      {
         //change reference frame if it is not map frame
-        ROS_INFO("goal target reference frame : %s", goal->pose.header.frame_id.c_str());
-        listener.waitForTransform("map",goal->pose.header.frame_id, ros::Time(0), ros::Duration(3.0));
-        //goal->pose.header.frame_id = "map";
-        listener.transformPoint("map", goal->pose, point_out);
+        //ROS_INFO("goal target reference frame : %s", goal->pose.header.frame_id.c_str());
+        try{
+            listener.waitForTransform("map",goal->pose.header.frame_id, ros::Time(0), ros::Duration(3.0));
+            //goal->pose.header.frame_id = "map";
+            listener.transformPoint("map", goal->pose, point_out);
+        }
+        catch(...){
+            ROS_WARN("tf exception spot");
+            result_.is_free = false;
+            as_.setSucceeded(result_);
+            return;
+        
+        }
         isObstacle=check_obstacle(point_out.point.x, point_out.point.y);
      }
      else
@@ -185,7 +187,7 @@ public:
         isObstacle=check_obstacle(goal->pose.point.x, goal->pose.point.y);
      }
 
-     ROS_INFO("is obstacle? %d",isObstacle );
+     //ROS_INFO("is obstacle? %d",isObstacle );
      result_.is_free = isObstacle;
      as_.setSucceeded(result_);
 }

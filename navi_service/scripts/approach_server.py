@@ -25,7 +25,6 @@ import math
 _ORIGIN_TF ='map'
 _BASE_TF = 'base_link'
 
-
 class ApproachServer(object):
 
     def __init__(self, name):
@@ -65,12 +64,14 @@ class ApproachServer(object):
         self.vel_pub = rospy.Publisher('/hsrb/command_velocity', geometry_msgs.msg.Twist,queue_size=10)
         self.headPub = rospy.Publisher('/hsrb/head_trajectory_controller/command', JointTrajectory, queue_size=1)
 
-
         jointstates_topic='hsrb/joint_states'
 	rospy.Subscriber(jointstates_topic, JointState, self.joint_state_Cb)
 
         robot_pose_topic='global_pose'
         rospy.Subscriber(robot_pose_topic, PoseStamped, self.robot_pose_Cb)
+
+        # targetose_topic='global_pose'
+        # rospy.Subscriber(robot_pose_topic, PoseStamped, self.robot_pose_Cb)
 
         self._as = actionlib.SimpleActionServer(self._action_name, navi_service.msg.ApproachAction, execute_cb=self.execute_cb, auto_start = False)
         self._as.start()
@@ -172,9 +173,21 @@ class ApproachServer(object):
                 rospy.loginfo("target is occupied")
                 self.feedback_.is_possible_go=False;
                 self._as.publish_feedback(self.feedback_)
+                self.result_.success=False
+                self._as.set_succeeded(self.result_)
                 return
 
     def execute_cb(self, goal):
+        rospy.loginfo("Aproach action callback")
+
+
+        if self._as.is_preempt_requested():
+            rospy.loginfo('Action Halted')
+            self._as.set_preempted()
+            self.feedback_.is_possible_go=False
+            self._as.publish_feedback(self.feedback_)
+            self._as.set_succeeded(self.result_)
+            return
 
         self.IsActive = True
         self.IsGoal= False
@@ -240,15 +253,32 @@ class ApproachServer(object):
         pose.point.y= goal.target.pose.position.y
         obs_goal.pose =pose
         self.obs_cli.send_goal(obs_goal)
-        self.obs_cli.wait_for_result(rospy.Duration(3.0))
+        # self.obs_cli.wait_for_result(rospy.Duration(3.0))
+        self.obs_cli.wait_for_result(rospy.Duration(6.0))
         obs_result= self.obs_cli.get_result()
-        self.is_Obstacle= obs_result.is_free
-        print self.is_Obstacle
+        print(obs_result)
+        # rospy.loginfo("obstacle checker results: %d", obs_result)
+        if obs_result!=None:
+            self.is_Obstacle= obs_result.is_free #true if obstalce exists
 
-        self.process_target(self.target_point,self.gazetarget_point)
+            if self.is_Obstacle==False:
+                self.process_target(self.target_point,self.gazetarget_point)
+                while self.IsActive ==True:
+                    self.control_base() 
+            else:
+                rospy.loginfo("cannot execute action because there is obstalces")
+        else:
 
-        while self.IsActive ==True:
-            self.control_base() 
+            rospy.loginfo("checkobs is None....still move base")
+            self.process_target(self.target_point,self.gazetarget_point)
+            while self.IsActive ==True:
+                self.control_base() 
+
+            # self.feedback_.is_possible_go=False
+            # self.result_.success=False
+            # self._as.set_succeeded(self.result_)
+            # return
+
 
         # self._as.set_succeeded()
 

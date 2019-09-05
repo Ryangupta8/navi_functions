@@ -5,3 +5,4 @@ geometry_msgs/PointStamped pose
 bool is_free
 ---
 #feedback
+bool isfree
