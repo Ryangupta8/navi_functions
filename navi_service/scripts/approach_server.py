@@ -352,7 +352,7 @@ class ApproachServer(object):
         point = JointTrajectoryPoint()
         point.positions = [pan, tilt]
         point.velocities = [0,0]
-        point.time_from_start = rospy.Duration(0.5)
+        point.time_from_start = rospy.Duration(0.25)
 
         jointTrajectory.points.append(point)
         self.headPub.publish(jointTrajectory)
