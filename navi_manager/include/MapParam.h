@@ -13,8 +13,8 @@
 
 
 #define Grid_STEP 0.5
-#define Grid_Num_X 24
-#define Grid_Num_Y 24
+#define Grid_Num_X 48
+#define Grid_Num_Y 48
 
 using namespace Eigen;
 using namespace std;

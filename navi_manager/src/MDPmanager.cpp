@@ -122,15 +122,15 @@ void MDPManager::Init()
 	//Declare publisher
 	 // obsmap_Pub= m_node.advertise<std_msgs::Int32MultiArray>("MDP/costmap", 10);
 	 // Path_Pub= m_node.advertise<std_msgs::Int32MultiArray>("MDP/path", 10);
-	 SplinePath_pub=  m_node.advertise<nav_msgs::Path>("mdp_path", 10, true);
-	 SplinePath_pub2=  m_node.advertise<nav_msgs::Path>("mdp_path_dynamic", 10, true);
-	 UnitGoalVec_pub = m_node.advertise<std_msgs::Float32MultiArray>("/CBA_unit_goal", 10, true);
+	 //SplinePath_pub=  m_node.advertise<nav_msgs::Path>("mdp_path", 10, true);
+	 //SplinePath_pub2=  m_node.advertise<nav_msgs::Path>("mdp_path_dynamic", 10, true);
+	 //UnitGoalVec_pub = m_node.advertise<std_msgs::Float32MultiArray>("/CBA_unit_goal", 10, true);
 	 Scaled_static_map_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_static_map", 10, true);
-	 Scaled_static_map_path_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_static_map_path", 10, true);
-	 Scaled_dynamic_map_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_dynamic_map", 10, true);
-	 Scaled_dynamic_map_path_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_dynamic_map_path", 10, true);
-	 MDPSol_pub = m_node.advertise<std_msgs::Int32MultiArray>("MDP/Solution", 10);
-	 RobotHeading_pub= m_node.advertise<geometry_msgs::Pose>("mdp_HeadingV", 10);
+	 //Scaled_static_map_path_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_static_map_path", 10, true);
+	 //Scaled_dynamic_map_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_dynamic_map", 10, true);
+	 //Scaled_dynamic_map_path_pub=m_node.advertise<nav_msgs::OccupancyGrid>("/scaled_dynamic_map_path", 10, true);
+	 //MDPSol_pub = m_node.advertise<std_msgs::Int32MultiArray>("MDP/Solution", 10);
+	 //RobotHeading_pub= m_node.advertise<geometry_msgs::Pose>("mdp_HeadingV", 10);
 
 	Scaled_static_map_path.info.width=Grid_Num_X;
 	Scaled_static_map_path.info.height= Grid_Num_Y;
@@ -917,16 +917,17 @@ void MDPManager::static_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg
 	int numcount=0;
 	int	original_width=msg->info.width;
 	int	original_height= msg->info.height;
-	double original_x=-51.225;
-	double original_y=-51.225;;
+	double original_x=msg->info.origin.position.x;
+	double original_y=msg->info.origin.position.y;
+	//double original_y=-51.225;;
 	double oroginal_res=0.05;
 
 	//for static space map
-	Scaled_static_map.info.width=Grid_Num_X;
-	Scaled_static_map.info.height= Grid_Num_Y;
+	Scaled_static_map.info.width=48;
+	Scaled_static_map.info.height= 48;
 	Scaled_static_map.info.resolution=0.5;
-	Scaled_static_map.info.origin.position.x=-2.65;
-	Scaled_static_map.info.origin.position.y=-2.65;
+	Scaled_static_map.info.origin.position.x=-12;
+	Scaled_static_map.info.origin.position.y=-12;
 	Scaled_static_map.data.resize(Scaled_static_map.info.width*Scaled_static_map.info.height);
 
 	// if(msg->data[0]!=NULL)
@@ -937,12 +938,12 @@ void MDPManager::static_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg
 		// 	std::cout<<msg->data[z]<<std::endl;
 	
 	//for path map
-	Scaled_static_map_path.info.width=32;
-	Scaled_static_map_path.info.height= 32;
+	Scaled_static_map_path.info.width=48;
+	Scaled_static_map_path.info.height= 48;
 	Scaled_static_map_path.info.resolution=0.5;
-	Scaled_static_map_path.info.origin.position.x=-2.65;
-	Scaled_static_map_path.info.origin.position.y=-2.65;
-	Scaled_static_map_path.data.resize(32*32);
+	Scaled_static_map_path.info.origin.position.x=-12;
+	Scaled_static_map_path.info.origin.position.y=-12;
+	Scaled_static_map_path.data.resize(48*48);
 
    double base_origin_x =msg->info.origin.position.x;
    double base_origin_y =msg->info.origin.position.y;
@@ -976,8 +977,8 @@ void MDPManager::static_mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg
 				 	numcount++;
    			}
 
-   			if(numcount>4)
-   				scaled_result=50;
+   			if(numcount>5)
+   				scaled_result=100;
    			else
    				scaled_result=0;
 

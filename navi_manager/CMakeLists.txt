@@ -66,11 +66,11 @@ add_executable(path_follow src/follow_test.cpp ${SOURCES})
 target_link_libraries(path_follow ${catkin_LIBRARIES})
 add_dependencies(path_follow ${catkin_EXPORTED_TARGETS})
 
-add_executable(base_actionlib_mk src/base_actionlib.cpp)
-target_link_libraries(base_actionlib_mk ${catkin_LIBRARIES})
+#add_executable(base_actionlib_mk src/base_actionlib.cpp)
+#target_link_libraries(base_actionlib_mk ${catkin_LIBRARIES})
 
-add_executable(conti_base_actionlib src/base_conti_actionlib.cpp)
-target_link_libraries(conti_base_actionlib ${catkin_LIBRARIES})
+#add_executable(conti_base_actionlib src/base_conti_actionlib.cpp)
+#target_link_libraries(conti_base_actionlib ${catkin_LIBRARIES})
 
 install(DIRECTORY scripts/
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

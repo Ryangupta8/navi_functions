@@ -29,8 +29,9 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
   
   Point_sub     = n.subscribe<geometry_msgs::PointStamped>("/clicked_point", 10, &MDPManager::ClikedpointCallback,&problemmanager);
-  staticmap_sub = n.subscribe<nav_msgs::OccupancyGrid>("/static_obstacle_map_ref", 30, &MDPManager::static_mapCallback,&problemmanager); 
-  global_pos_sub= n.subscribe<geometry_msgs::PoseStamped>("/global_pose", 10, &MDPManager::global_pose_callback,&problemmanager);
+  //staticmap_sub = n.subscribe<nav_msgs::OccupancyGrid>("/static_obstacle_map_ref", 30, &MDPManager::static_mapCallback,&problemmanager); 
+  staticmap_sub = n.subscribe<nav_msgs::OccupancyGrid>("/spot/map", 30, &MDPManager::static_mapCallback,&problemmanager); 
+  //global_pos_sub= n.subscribe<geometry_msgs::PoseStamped>("/global_pose", 10, &MDPManager::global_pose_callback,&problemmanager);
 
   ros::Rate loop_rate(20);
 
